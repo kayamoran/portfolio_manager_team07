@@ -27,12 +27,12 @@ def display_stocks(db: Session = Depends(get_db)):
         portfolio.append({
             "symbol": item.symbol,
             "name": item.name,
-            "last_price": item.last_price,
+            "last_price": f"${item.last_price:.2f}",
             "quantity": item.quantity,
-            "purchase_price": item.avg_purchase_price,
-            "market_value": market_value,
-            "total_gain_amount": total_gain_amount,
-            "total_gain_percent": total_gain_percent
+            "purchase_price": f"${item.avg_purchase_price:.2f}",
+            "market_value": f"${market_value:.2f}",
+            "total_gain_amount": f"${total_gain_amount:.2f}",
+            "total_gain_percent": f"{total_gain_percent:.2f}%",
         })
 
     return portfolio
