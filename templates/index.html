@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+</head>
+
+<body class="bg-gray-900 text-white font-sans">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <!-- Sidebar -->
+<aside class="w-64 bg-gray-800 p-6 flex flex-col justify-between">
+  <!-- Top Section -->
+  <div>
+    <h2 class="text-2xl font-bold text-white">Portfolio Manager</h2>
+    <nav class="space-y-4 mt-6">
+      <a href="index.html" class="flex items-center text-white hover:text-cyan-400">
+        <span class="material-icons mr-2">Dashboard
+      </a>
+      <a href="portfolio.html" class="block hover:text-cyan-400">Portfolio</a>
+      <a href="#" class="block hover:text-cyan-400">News</a>
+      <a href="#" class="block hover:text-cyan-400">Analysis</a>
+    </nav>
+  </div>
+
+  <!-- Bottom Section -->
+  <div class="space-y-2">
+    <a href="#" class="block text-sm text-gray-400 hover:text-white">Support</a>
+    <a href="#" class="block text-sm text-gray-400 hover:text-white">Settings</a>
+    <div class="flex items-center space-x-3 mt-4">
+        <img src="https://ui-avatars.com/api/?name=Kanash&background=4f46e5&color=fff&rounded=true" alt="Avatar" class="w-8 h-8 rounded-full" />
+        <a href="#" class="block text-sm text-gray-400 hover:text-white">Kanash</a>
+  </div>
+</aside>
+
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 overflow-y-auto">
+            <!-- Top Bar -->
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold">Hello, Kanash</h1>
+                    <p class="text-sm text-gray-400">Nice to see you again. Welcome back to your Portfolio!</p>
+                </div>
+                <input type="text" placeholder="Search stocks..." class="bg-gray-700 text-white px-4 py-2 rounded" />
+            </div>
+
+            <!-- Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Watchlist -->
+                <div class="bg-gray-800 p-4 rounded shadow">
+                    <h2 class="text-lg font-semibold mb-4">Watchlist</h2>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex justify-between">
+                            <span>APPL</span><span>$212.12 <span class="text-green-400">+1.05%</span></span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>MS</span><span>$145.11 <span class="text-red-400">-4.12%</span></span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>ELF</span><span>$212.12 <span class="text-green-400">+2.08%</span></span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>MSFT</span><span>$212.12 <span class="text-green-400">+1.05%</span></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Line Chart -->
+                <div class="bg-gray-800 p-4 rounded shadow col-span-2">
+                    <h2 class="text-lg font-semibold mb-4">Portfolio Value</h2>
+                    <canvas id="lineChart"></canvas>
+                    <div class="flex justify-between mt-4 text-sm text-gray-400">
+                        <span>24H</span><span>1M</span><span>3M</span><span>6M</span><span>YTD</span><span>5Y</span><span>ALL</span>
+                    </div>
+                </div>
+
+                <!-- Portfolio Overview -->
+                <div class="bg-gray-800 p-4 rounded shadow col-span-2">
+                    <h2 class="text-lg font-semibold mb-4">Portfolio Overview</h2>
+                    <table class="w-full text-sm">
+                        <thead class="text-left text-gray-400">
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Price</th>
+                                <th>%Change</th>
+                                <th>Qty</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t border-gray-700">
+                                <td>APPL</td>
+                                <td>$212.12</td>
+                                <td class="text-green-400">+1.05%</td>
+                                <td>20</td>
+                                <td>$4500</td>
+                            </tr>
+                            <tr class="border-t border-gray-700">
+                                <td>MS</td>
+                                <td>$145.11</td>
+                                <td class="text-red-400">-4.12%</td>
+                                <td>51</td>
+                                <td>$237.5</td>
+                            </tr>
+                            <tr class="border-t border-gray-700">
+                                <td>ELF</td>
+                                <td>$212.12</td>
+                                <td class="text-green-400">+2.08%</td>
+                                <td>18</td>
+                                <td>$500.3</td>
+                            </tr>
+                            <tr class="border-t border-gray-700">
+                                <td>MSFT</td>
+                                <td>$212.12</td>
+                                <td class="text-green-400">+1.05%</td>
+                                <td>20</td>
+                                <td>$966.4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pie Chart -->
+                <div class="bg-gray-800 p-4 rounded shadow">
+                    <h2 class="text-lg font-semibold mb-4">Holdings Breakdown</h2>
+                    <canvas id="pieChart"></canvas>
+                    <div class="flex justify-around text-sm text-gray-400 mt-4">
+                        <span class="text-green-400">Mutual Funds</span>
+                        <span class="text-blue-400">Stocks</span>
+                        <span class="text-red-400">Bonds</span>
+                    </div>
+                </div>
+
+                <!-- News Panel -->
+                <div class="bg-gray-800 p-4 rounded shadow">
+                    <h2 class="text-lg font-semibold mb-4">News</h2>
+                    <ul class="space-y-2 text-sm">
+                        <li><strong class="text-red-400">CNN</strong> - Dow Dips As Microsoft Slips Ahead Of Earnings
+                        </li>
+                        <li><strong class="text-blue-400">CNBC</strong> - Nasdaq Slides As Tesla Tumbles On Delivery
+                            Concerns</li>
+                        <li><strong class="text-indigo-400">FOX</strong> - S&P Edges Lower As Apple Retreats Before Key
+                            Report</li>
+                        <li><strong class="text-white">AP</strong> - Tech Stocks Fall As Nvidia Sheds Gains</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Line Chart
+        new Chart(document.getElementById('lineChart'), {
+            type: 'line',
+            data: {
+                labels: [...Array(30).keys()],
+                datasets: [{
+                    label: 'Portfolio Value',
+                    data: [100, 90, 80, 50, 45, 60, 58, 59, 60, 70, 90, 92, 95, 110, 105, 100, 102, 120, 125, 130, 128, 135, 140, 138, 140, 145, 148, 149, 150, 155],
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                plugins: { legend: { labels: { color: 'white' } } },
+                scales: {
+                    x: { ticks: { color: 'white' }, grid: { color: '#333' } },
+                    y: { ticks: { color: 'white' }, grid: { color: '#333' } }
+                }
+            }
+        });
+
+        // Pie Chart
+        new Chart(document.getElementById('pieChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Mutual Funds', 'Stocks', 'Bonds'],
+                datasets: [{
+                    data: [40, 40, 20],
+                    backgroundColor: ['#22c55e', '#3b82f6', '#ef4444'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+</body>
+
+</html>

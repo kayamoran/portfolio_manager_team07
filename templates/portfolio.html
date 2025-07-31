@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <a href="index.html" class="block hover:text-cyan-400">Dashboard</a>
+    
+
+  </head>
+  <body class="bg-gray-900 text-white font-sans">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <aside class="w-64 bg-gray-800 p-6 flex flex-col">
+        <h2 class="text-2xl font-bold text-white mb-6">Portfolio Manager</h2>
+        <nav class="space-y-4 flex-1">
+          <a href="index.html" class="flex items-center text-white hover:text-cyan-400">
+            <span class="material-icons mr-2">Dashboard
+          </a>
+          <a href="portfolio.html" class="block text-cyan-400 font-semibold">Portfolio</a>
+          <a href="#" class="block hover:text-cyan-400">News</a>
+          <a href="#" class="block hover:text-cyan-400">Analysis</a>
+        </nav>
+        <div class="space-y-2">
+          <a href="#" class="block text-sm text-gray-400 hover:text-white">Support</a>
+          <a href="#" class="block text-sm text-gray-400 hover:text-white">Settings</a>
+          <div class="flex items-center space-x-3 mt-4">
+            <img src="https://ui-avatars.com/api/?name=Kanash&background=4f46e5&color=fff&rounded=true" alt="Avatar" class="w-8 h-8 rounded-full" />
+            <span class="text-sm text-white font-medium">Kanash</span>
+          </div>
+        </div>
+      </aside>
+
+ <main class="flex-1 p-8 space-y-6">
+      <div>
+        <h1 class="text-2xl font-bold">Hello, Kanash</h1>
+        <p class="text-gray-400 text-sm">Nice to see you again, browse freely !!</p>
+      </div>
+
+      <div class="grid grid-cols-4 gap-4">
+        <div class="bg-gray-800 p-4 rounded-lg col-span-1">
+          <p class="text-sm text-gray-400">Total Stock Value</p>
+          <p class="text-2xl font-semibold text-white">$26,750.05</p>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg col-span-1">
+          <p class="text-sm text-gray-400">Total Buying Power</p>
+          <p class="text-2xl font-semibold text-white">$10,220.00</p>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg col-span-1">
+          <p class="text-sm text-gray-400">Today's gain</p>
+          <p class="text-2xl font-semibold text-green-400">+12.05%</p>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg col-span-1">
+          <p class="text-sm text-gray-400">Total gain</p>
+          <p class="text-2xl font-bold text-red-500">-42.05%</p>
+        </div>
+        <div class="flex justify-center items-center space-x-4 mt-4">
+          <button class="flex-1 bg-green-500 text-white py-2 rounded">Buy</button>
+          <button class="flex-1 bg-red-500 text-white py-2 rounded">Sell</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="bg-gray-800 p-4 rounded-lg overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="text-gray-400 text-left">
+            <tr>
+              <th class="p-2">Symbol</th>
+              <th class="p-2">Price</th>
+              <th class="p-2">Day's Gain $</th>
+              <th class="p-2">Total gain $</th>
+              <th class="p-2">Market Value</th>
+              <th class="p-2">Quantity</th>
+              <th class="p-2">Market Cap</th>
+              <th class="p-2">Volume</th>
+              <th class="p-2">Day's gain %</th>
+              <th class="p-2">Total gain %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Sample Row (repeat or generate dynamically later) -->
+            <tr class="border-t border-gray-700">
+              <td class="p-2">AAPL</td>
+              <td class="p-2">$210</td>
+              <td class="p-2 text-red-500">-$20.75</td>
+              <td class="p-2 text-red-500">-$56.95</td>
+              <td class="p-2">$4954</td>
+              <td class="p-2">120</td>
+              <td class="p-2">$3.5T</td>
+              <td class="p-2">4.55M</td>
+              <td class="p-2 text-red-500">-4.05%</td>
+              <td class="p-2 text-red-500">-20.44%</td>
+            </tr>
+            <!-- Add more rows here -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
