@@ -4,6 +4,13 @@ from fastapi import APIRouter, HTTPException
 
 router = APIRouter()
 
+def human_readable_number(num):
+    for unit in ['', 'K', 'M', 'B', 'T']:
+        if abs(num) < 1000:
+            return f"{num:.0f}{unit}"
+        num /= 1000
+    return f"{num:.0f}T"
+
 @router.get("/{symbol}")
 def search_stock(symbol: str):
     stock = yf.Ticker(symbol)
@@ -15,8 +22,10 @@ def search_stock(symbol: str):
     return {
         "symbol": symbol.upper(),
         "name": info.get("shortName", "N/A"),
-        "price": info.get("regularMarketPrice"),
-        "change_percent": info.get("regularMarketChangePercent"),
+        "price": f"${(info.get("regularMarketPrice"))}",
+        "change_percent": f"{info.get("regularMarketChangePercent"):.2f}%",
         "currency": info.get("currency"),
         "exchange": info.get("exchange"),
+        "market_cap": human_readable_number(info.get("marketCap")),
+        "trading_volume": human_readable_number(info.get("volume")),
     }

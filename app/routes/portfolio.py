@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.crud.portfolio import get_portfolio
+from app.crud.portfolio import add_to_portfolio, get_portfolio
 from app.database import get_db
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
@@ -15,47 +15,87 @@ from app.models import PortfolioItem
 router = APIRouter()
 
 @router.get("/displayStocks")
-def read_portfolio(db: Session = Depends(get_db)):
-    portfolio = get_portfolio(db)
+def display_stocks(db: Session = Depends(get_db)):
+    items = db.query(PortfolioItem).all()
+    portfolio = []
+
+    for item in items:
+        market_value = item.last_price * item.quantity
+        total_gain_amount = (item.last_price - item.avg_purchase_price) * item.quantity
+        total_gain_percent = ((item.last_price - item.avg_purchase_price) / item.avg_purchase_price) * 100 if item.avg_purchase_price else 0
+
+        portfolio.append({
+            "symbol": item.symbol,
+            "name": item.name,
+            "last_price": item.last_price,
+            "quantity": item.quantity,
+            "purchase_price": item.avg_purchase_price,
+            "market_value": market_value,
+            "total_gain_amount": total_gain_amount,
+            "total_gain_percent": total_gain_percent
+        })
+
     return portfolio
 
 #buy stocks
 @router.post("/buy")
-def buy_stock(symbol: str, amount: float, db: Session = Depends(get_db)):
-    symbol = symbol.upper()
-    stock = yf.Ticker(symbol)
-    info = stock.info
+def buy_stock(symbol: str, quantity: int, db: Session = Depends(get_db)):
+    try:
+        data = yf.Ticker(symbol).info
+        name = data.get("shortName", symbol)
+        current_price = data["regularMarketPrice"]
+    except Exception:
+        raise HTTPException(status_code=404, detail="Stock not found or API error.")
 
-    price = info.get("regularMarketPrice")
-    name = info.get("shortName", "N/A")
-
-    if not price:
-        raise HTTPException(status_code=404, detail="Stock not found")
-
-    quantity_to_buy = amount / price
-
-    # Check if already in portfolio
     existing = db.query(PortfolioItem).filter_by(symbol=symbol).first()
 
     if existing:
-        existing.quantity += quantity_to_buy
-        existing.last_price = price
-        existing.value = existing.quantity * price
-        
+        total_quantity = existing.quantity + quantity
+        total_cost = (existing.avg_purchase_price * existing.quantity) + (current_price * quantity)
+        existing.avg_purchase_price = total_cost / total_quantity
+        existing.quantity = total_quantity
+        existing.last_price = current_price
+        db.commit()
+        db.refresh(existing)
+        return existing
     else:
         new_item = PortfolioItem(
             symbol=symbol,
             name=name,
-            last_price=price,
-            quantity=quantity_to_buy,
-            value=quantity_to_buy * price,
-            total_gain=0,
-            todays_gain=0,
-            total_gain_percent=0,
-            todays_gain_percent=0,
+            last_price=current_price,
+            quantity=quantity,
+            avg_purchase_price=current_price
         )
-        db.add(new_item)
-
-    db.commit()
-    return {"message": "Stock purchased", "symbol": symbol, "quantity": quantity_to_buy, "price": price}
+        return add_to_portfolio(db, new_item)
+    #return {"message": "Stock purchased", "symbol": symbol, "quantity": quantity_to_buy, "price": price}
 #sell stocks
+@router.post("/sell")
+def sell_stock(symbol: str, quantity: int, db: Session = Depends(get_db)):
+    if quantity <= 0:
+        raise HTTPException(status_code=400, detail="Quantity must be greater than zero.")
+
+    item = db.query(PortfolioItem).filter_by(symbol=symbol).first()
+
+    if not item:
+        raise HTTPException(status_code=404, detail="Stock not found in portfolio.")
+
+    if quantity > item.quantity:
+        raise HTTPException(status_code=400, detail="Not enough quantity to sell.")
+
+    item.quantity -= quantity
+
+    if item.quantity == 0:
+        db.delete(item)
+        db.commit()
+        return {"message": f"Sold all shares of {symbol}. Stock removed from portfolio."}
+    else:
+        # Optionally update last_price from market
+        try:
+            current_price = yf.Ticker(symbol).info["regularMarketPrice"]
+            item.last_price = current_price
+        except:
+            pass  # Keep existing last_price if API fails
+
+        db.commit()
+        db.refresh(item)
+        return item
