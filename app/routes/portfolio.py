@@ -11,6 +11,7 @@ import yfinance as yf
 
 from app.crud.watchlist import get_watchlist
 from app.models import PortfolioItem
+from app.routes.search import human_readable_number
 
 router = APIRouter()
 
@@ -20,6 +21,7 @@ def display_stocks(db: Session = Depends(get_db)):
     portfolio = []
 
     for item in items:
+        data = yf.Ticker(item.symbol).info
         market_value = item.last_price * item.quantity
         total_gain_amount = (item.last_price - item.avg_purchase_price) * item.quantity
         total_gain_percent = ((item.last_price - item.avg_purchase_price) / item.avg_purchase_price) * 100 if item.avg_purchase_price else 0
@@ -33,6 +35,8 @@ def display_stocks(db: Session = Depends(get_db)):
             "market_value": f"${market_value:.2f}",
             "total_gain_amount": f"${total_gain_amount:.2f}",
             "total_gain_percent": f"{total_gain_percent:.2f}%",
+            "market_cap": human_readable_number(data.get("marketCap", "N/A")),
+            "volume": human_readable_number(data.get("volume", "N/A")),
         })
 
     return portfolio
