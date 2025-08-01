@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Portfolio Manager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#121212] text-white min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-md bg-[#1e1e1e] p-8 rounded-2xl shadow-xl">
+    <h2 class="text-2xl font-bold mb-6 text-center">Welcome Back</h2>
+    
+    <form onsubmit="event.preventDefault(); window.location.href='index.html';" class="space-y-5">
+      <div>
+        <label for="email" class="block text-sm text-gray-300">Email</label>
+        <input type="email" id="email" name="email" required
+          class="w-full mt-1 px-4 py-2 bg-[#2a2a2a] text-white border border-[#333] rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" />
+      </div>
+      
+      <div>
+        <label for="password" class="block text-sm text-gray-300">Password</label>
+        <input type="password" id="password" name="password" required
+          class="w-full mt-1 px-4 py-2 bg-[#2a2a2a] text-white border border-[#333] rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" />
+      </div>
+      
+      <div class="flex items-center justify-between text-sm text-gray-400">
+        <label class="flex items-center">
+          <input type="checkbox" class="accent-purple-500 mr-2">
+          Remember me
+        </label>
+        <a href="#" class="text-purple-400 hover:underline">Forgot password?</a>
+      </div>
+      
+      <button type="submit"
+        <a href= "index.html" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition duration-200 font-semibold"></a>
+        Log In
+      </button>
+    </form>
+
+    <p class="text-center text-gray-400 text-sm mt-6">
+      Don’t have an account? <a href="#" class="text-purple-400 hover:underline">Sign Up</a>
+    </p>
+  </div>
+</body>
+</html>
