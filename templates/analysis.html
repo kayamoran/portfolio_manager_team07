@@ -34,10 +34,9 @@
     <a href="#" class="block text-sm text-gray-400 hover:text-white">Settings</a>
     <div class="flex items-center space-x-3 mt-4">
         <img src="https://ui-avatars.com/api/?name=Kanash&background=4f46e5&color=fff&rounded=true" alt="Avatar" class="w-8 h-8 rounded-full" />
-        <a href="#" class="block text-sm text-gray-400 hover:text-white">Kanash</a>
+        <a href="login.html" class="block text-sm text-white font-medium">Kanash</a>
   </div>
 </aside>
-
 
         <!-- Main Content -->
         <main class="flex-1 p-6 overflow-y-auto">
@@ -49,3 +48,63 @@
                 </div>
                 <input type="text" placeholder="Search stocks..." class="bg-gray-700 text-white px-4 py-2 rounded" />
             </div>
+            <!-- Line Chart -->
+                <div class="bg-gray-800 p-4 rounded shadow col-span-2">
+                    <h2 class="text-lg font-semibold mb-4">Portfolio Value</h2>
+                    <canvas id="lineChart"></canvas>
+                    <div class="flex justify-between mt-4 text-sm text-gray-400">
+                        <span>24H</span><span>1M</span><span>3M</span><span>6M</span><span>YTD</span><span>5Y</span><span>ALL</span>
+                    </div>
+                </div>
+        <!-- Pie Chart -->
+                <div class="bg-gray-800 p-4 rounded shadow">
+                    <h2 class="text-lg font-semibold mb-4">Holdings Breakdown</h2>
+                    <canvas id="pieChart"></canvas>
+                    <div class="flex justify-around text-sm text-gray-400 mt-4">
+                        <span class="text-green-400">Mutual Funds</span>
+                        <span class="text-blue-400">Stocks</span>
+                        <span class="text-red-400">Bonds</span>
+                    </div>
+                    <br>
+                </div>
+           <script>  
+        // Line Chart
+        new Chart(document.getElementById('lineChart'), {
+            type: 'line',
+            data: {
+                labels: [...Array(30).keys()],
+                datasets: [{
+                    label: 'Portfolio Value',
+                    data: [100, 90, 80, 50, 45, 60, 58, 59, 60, 70, 90, 92, 95, 110, 105, 100, 102, 120, 125, 130, 128, 135, 140, 138, 140, 145, 148, 149, 150, 155],
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                plugins: { legend: { labels: { color: 'white' } } },
+                scales: {
+                    x: { ticks: { color: 'white' }, grid: { color: '#333' } },
+                    y: { ticks: { color: 'white' }, grid: { color: '#333' } }
+                }
+            }
+        });
+
+        // Pie Chart
+        new Chart(document.getElementById('pieChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Mutual Funds', 'Stocks', 'Bonds'],
+                datasets: [{
+                    data: [40, 40, 20],
+                    backgroundColor: ['#22c55e', '#3b82f6', '#ef4444'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } }
+            }
+        });
+
+    </script>
