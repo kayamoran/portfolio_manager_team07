@@ -20,4 +20,10 @@ class PortfolioItem(Base):
     quantity = Column(Integer)
     avg_purchase_price = Column(Float)  # Cost basis for the stock
     
+class PortfolioStatus(Base):
+    __tablename__ = "portfolio_status"
+
+    id = Column(Integer, primary_key=True, index=True)
+    cash_balance = Column(Float, default=1_000_000.0)
+    
    
