@@ -42,7 +42,7 @@ def display_stocks(db: Session = Depends(get_db)):
     return portfolio
 
 #buy stocks
-@router.post("/buy")
+@router.post("/buy/{symbol}/{quantity}")
 def buy_stock(symbol: str, quantity: int, db: Session = Depends(get_db)):
     try:
         data = yf.Ticker(symbol).info
@@ -100,7 +100,7 @@ def buy_stock(symbol: str, quantity: int, db: Session = Depends(get_db)):
     return existing if existing else new_item
    
 #sell stocks
-@router.post("/sell")
+@router.post("/sell/{symbol}/{quantity}")
 def sell_stock(symbol: str, quantity: int, db: Session = Depends(get_db)):
     if quantity <= 0:
         raise HTTPException(status_code=400, detail="Quantity must be greater than zero.")

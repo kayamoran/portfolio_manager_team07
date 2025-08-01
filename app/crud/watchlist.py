@@ -3,7 +3,7 @@ from app.models import WatchlistItem
 
 
 #create
-def add_to_watchlist(db: Session, item: WatchlistItem):
+def add_watchlist(db: Session, item: WatchlistItem):
     db.add(item)
     db.commit()
     db.refresh(item)

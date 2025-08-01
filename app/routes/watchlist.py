@@ -2,13 +2,13 @@ import yfinance as yf
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from app.models import WatchlistItem
-from app.crud.watchlist import add_to_watchlist, get_watchlist, remove_from_watchlist
+from app.crud.watchlist import add_watchlist, get_watchlist, remove_from_watchlist
 from app.database import get_db
 
 router = APIRouter()
 
 @router.post("/add/{symbol}")
-def add_stock(symbol: str, db: Session = Depends(get_db)):
+def add_to_watchlist(symbol: str, db: Session = Depends(get_db)):
     data = yf.Ticker(symbol).info
     if not data.get("regularMarketPrice"):
         raise HTTPException(status_code=404, detail="Stock not found")
@@ -19,10 +19,10 @@ def add_stock(symbol: str, db: Session = Depends(get_db)):
         price=data.get("regularMarketPrice"),
         change_percent=data.get("regularMarketChangePercent", 0),
     )
-    return add_to_watchlist(db, item)
+    return add_watchlist(db, item)
 
-@router.get("/")
-def read_watchlist(db: Session = Depends(get_db)):
+@router.get("/display")
+def get_watchlist_list(db: Session = Depends(get_db)):
     return get_watchlist(db)
 
 @router.delete("/{symbol}")
