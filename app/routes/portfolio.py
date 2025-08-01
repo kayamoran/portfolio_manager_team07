@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.crud.portfolio import add_to_portfolio, get_portfolio
+from app.crud.portfolio import add_to_portfolio, get_portfolio_data
 from app.database import get_db
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
@@ -10,7 +10,7 @@ import yfinance as yf
 
 
 from app.crud.watchlist import get_watchlist
-from app.models import PortfolioItem
+from app.models import PortfolioItem, PortfolioStatus, Transaction
 from app.routes.search import human_readable_number
 
 router = APIRouter()
@@ -51,17 +51,29 @@ def buy_stock(symbol: str, quantity: int, db: Session = Depends(get_db)):
     except Exception:
         raise HTTPException(status_code=404, detail="Stock not found or API error.")
 
+    if current_price is None:
+        raise HTTPException(status_code=400, detail="Price unavailable.")
+
+    # Calculate total cost
+    total_cost = current_price * quantity
+
+    # Fetch current cash status
+    status = db.query(PortfolioStatus).first()
+    if not status:
+        raise HTTPException(status_code=500, detail="Portfolio status not initialized.")
+
+    if status.cash_balance < total_cost:
+        raise HTTPException(status_code=400, detail="Insufficient funds to complete purchase.")
+
     existing = db.query(PortfolioItem).filter_by(symbol=symbol).first()
 
     if existing:
+        # Update average purchase price
         total_quantity = existing.quantity + quantity
-        total_cost = (existing.avg_purchase_price * existing.quantity) + (current_price * quantity)
-        existing.avg_purchase_price = total_cost / total_quantity
+        total_invested = (existing.avg_purchase_price * existing.quantity) + total_cost
+        existing.avg_purchase_price = total_invested / total_quantity
         existing.quantity = total_quantity
         existing.last_price = current_price
-        db.commit()
-        db.refresh(existing)
-        return existing
     else:
         new_item = PortfolioItem(
             symbol=symbol,
@@ -70,8 +82,23 @@ def buy_stock(symbol: str, quantity: int, db: Session = Depends(get_db)):
             quantity=quantity,
             avg_purchase_price=current_price
         )
-        return add_to_portfolio(db, new_item)
-    #return {"message": "Stock purchased", "symbol": symbol, "quantity": quantity_to_buy, "price": price}
+        db.add(new_item)
+
+    # Deduct cash
+    status.cash_balance -= total_cost
+    transaction = Transaction(
+    symbol=symbol,
+    name=name,
+    quantity=quantity,
+    price=current_price,
+    type="buy")
+    db.add(transaction)
+
+
+    db.commit()
+
+    return existing if existing else new_item
+   
 #sell stocks
 @router.post("/sell")
 def sell_stock(symbol: str, quantity: int, db: Session = Depends(get_db)):
@@ -86,20 +113,71 @@ def sell_stock(symbol: str, quantity: int, db: Session = Depends(get_db)):
     if quantity > item.quantity:
         raise HTTPException(status_code=400, detail="Not enough quantity to sell.")
 
+    # Get the current market price
+    try:
+        data = yf.Ticker(symbol).info
+        current_price = data.get("regularMarketPrice")
+        if current_price is None:
+            raise ValueError
+        item.last_price = current_price  # update last_price if needed
+    except:
+        raise HTTPException(status_code=400, detail="Could not fetch current market price.")
+
+    # Calculate revenue
+    revenue = current_price * quantity
+
+    # Update quantity
     item.quantity -= quantity
+
+    # Update cash balance
+    status = db.query(PortfolioStatus).first()
+    if not status:
+        raise HTTPException(status_code=500, detail="Portfolio status not initialized.")
+    status.cash_balance += revenue
 
     if item.quantity == 0:
         db.delete(item)
-        db.commit()
-        return {"message": f"Sold all shares of {symbol}. Stock removed from portfolio."}
-    else:
-        # Optionally update last_price from market
-        try:
-            current_price = yf.Ticker(symbol).info["regularMarketPrice"]
-            item.last_price = current_price
-        except:
-            pass  # Keep existing last_price if API fails
+        
+    transaction = Transaction(
+    symbol=symbol,
+    name=item.name,
+    quantity=quantity,
+    price=current_price,
+    type="sell")
+    db.add(transaction)
 
+    db.commit()
+
+    return {
+        "message": f"Sold {quantity} shares of {symbol} for ${revenue:.2f}",
+        "cash_balance": status.cash_balance
+    }
+
+
+@router.get("/cash")
+def get_cash_balance(db: Session = Depends(get_db)):
+    status = db.query(PortfolioStatus).first()
+    
+    if not status:
+        # Auto-initialize if missing
+        status = PortfolioStatus(cash_balance=1_000_000.0)
+        db.add(status)
         db.commit()
-        db.refresh(item)
-        return item
+        db.refresh(status)
+    return {"cash_balance": get_portfolio_data(db, PortfolioStatus)[0].cash_balance}
+
+
+@router.get("/transactions")
+def get_transaction_history(db: Session = Depends(get_db)):
+    history = db.query(Transaction).order_by(Transaction.timestamp.desc()).all()
+    return [
+        {
+            "symbol": t.symbol,
+            "name": t.name,
+            "quantity": t.quantity,
+            "price": t.price,
+            "type": t.type,
+            "timestamp": t.timestamp
+        }
+        for t in history
+    ]
