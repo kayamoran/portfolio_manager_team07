@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.crud.portfolio import add_to_portfolio, get_portfolio
+from app.crud.portfolio import add_to_portfolio, get_portfolio_data
 from app.database import get_db
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
@@ -164,7 +164,7 @@ def get_cash_balance(db: Session = Depends(get_db)):
         db.add(status)
         db.commit()
         db.refresh(status)
-    return {"cash_balance": status.cash_balance}
+    return {"cash_balance": get_portfolio_data(db, PortfolioStatus)[0].cash_balance}
 
 
 @router.get("/transactions")
