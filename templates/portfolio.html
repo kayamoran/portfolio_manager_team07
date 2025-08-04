@@ -93,26 +93,29 @@
 
       <!-- Table -->
       <div class="bg-gray-800 p-4 rounded-lg overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead class="text-center text-gray-400 text-[16px]">
-            <tr>
-              <th class="p-2">Symbol</th>
-              <th class="p-2">Short Name</th>
-              <th class="p-2">Last Price</th>
-              <th class="p-2">Market Value</th>
-              <th class="p-2">Quantity</th>
-              <th class="p-2">Market Cap</th>
-              <th class="p-2">Volume</th>
-              <th class="p-2">Total gain $</th>
-              <th class="p-2">Total gain %</th>
-              <th class="p-2">Avg Purchase price</th>
-            </tr>
-          </thead>
-          <tbody>
-
-          </tbody>
-        </table>
+        <div class="scrollable overflow-y-auto max-h-[400px]">
+          <table class="w-full text-sm">
+            <thead class="text-center text-gray-400 text-[16px] sticky top-0 bg-gray-800 z-10">
+              <tr>
+                <th class="p-2">Symbol</th>
+                <th class="p-2">Short Name</th>
+                <th class="p-2">Last Price</th>
+                <th class="p-2">Market Value</th>
+                <th class="p-2">Quantity</th>
+                <th class="p-2">Market Cap</th>
+                <th class="p-2">Volume</th>
+                <th class="p-2">Total gain $</th>
+                <th class="p-2">Total gain %</th>
+                <th class="p-2">Avg Purchase price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Your JS script will populate this -->
+            </tbody>
+          </table>
+        </div>
       </div>
+
     </main>
   </div>
   <div id="buyModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
@@ -296,6 +299,32 @@
 
 
   </script>
+
+  <style>
+    /* Target scrollable containers */
+    .scrollable::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .scrollable::-webkit-scrollbar-track {
+      background: #1f2937;
+      /* Tailwind gray-800 */
+      border-radius: 4px;
+    }
+
+    .scrollable::-webkit-scrollbar-thumb {
+      background: #4b5563;
+      /* Tailwind gray-600 */
+      border-radius: 4px;
+    }
+
+    .scrollable::-webkit-scrollbar-thumb:hover {
+      background: #6b7280;
+      /* Tailwind gray-500 */
+    }
+  </style>
+
+
 </body>
 
 </html>
