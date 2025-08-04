@@ -1,68 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-<<<<<<< HEAD
-=======
-    <a href="index.html" class="block hover:text-cyan-400"></a>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
->>>>>>> 8d28cde8307ce8c60dab947dd15f82744159e339
-    
 
-  </head>
-  <body class="bg-gray-900 text-white font-sans">
-    <div class="flex h-screen">
-      <!-- Sidebar -->
-      <aside class="w-64 bg-gray-800 p-6 flex flex-col">
-        <h2 class="text-2xl font-semibold text-white mb-8 mt-2">Portfolio Manager</h2>
-        <nav class="space-y-8 flex-1">
-          <a href="index.html" class="flex items-center text-white hover:text-cyan-400">
-  <span class="material-icons mr-2">dashboard</span>
-  <span>Dashboard</span>
-</a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <a href="index.html" class="block hover:text-cyan-400"></a>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<a href="portfolio.html" class="flex items-center text-cyan-400 font-semibold">
-  <span class="material-icons mr-2">pie_chart</span>
-  <span>Portfolio</span>
-</a>
 
-<a href="news.html" class="flex items-center hover:text-cyan-400">
-  <span class="material-icons mr-2">trending_up</span>
-  <span>News</span>
-</a>
+</head>
 
-<a href="analysis.html" class="flex items-center hover:text-cyan-400">
-  <span class="material-icons mr-2">analytics</span>
-  <span>Analysis</span>
-</a>
+<body class="bg-gray-900 text-white font-sans">
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-800 p-6 flex flex-col">
+      <h2 class="text-2xl font-semibold text-white mb-8 mt-2">Portfolio Manager</h2>
+      <nav class="space-y-8 flex-1">
+        <a href="index.html" class="flex items-center text-white hover:text-cyan-400">
+          <span class="material-icons mr-2">dashboard</span>
+          <span>Dashboard</span>
+        </a>
 
-        </nav>
-        <div class="space-y-8">
-          <a href="support.html" class="flex items-center hover:text-cyan-400">
-  <span class="material-icons mr-2">help_outline</span>
-  <span>Support</span>
-</a>
+        <a href="portfolio.html" class="flex items-center text-cyan-400 font-semibold">
+          <span class="material-icons mr-2">pie_chart</span>
+          <span>Portfolio</span>
+        </a>
 
-<a href="settings.html" class="flex items-center hover:text-cyan-400">
-  <span class="material-icons mr-2">settings</span>
-  <span>Settings</span>
-</a>
-          <div class="flex items-center space-x-3 mt-4">
-            <img src="https://ui-avatars.com/api/?name=Kanash&background=4f46e5&color=fff&rounded=true" alt="Avatar" class="w-8 h-8 rounded-full" />
-            <a href="login.html" class="text-sm text-white font-medium">Kanash</a>
-          </div>
+        <a href="news.html" class="flex items-center hover:text-cyan-400">
+          <span class="material-icons mr-2">trending_up</span>
+          <span>News</span>
+        </a>
+
+        <a href="analysis.html" class="flex items-center hover:text-cyan-400">
+          <span class="material-icons mr-2">analytics</span>
+          <span>Analysis</span>
+        </a>
+
+      </nav>
+      <div class="space-y-8">
+        <a href="support.html" class="flex items-center hover:text-cyan-400">
+          <span class="material-icons mr-2">help_outline</span>
+          <span>Support</span>
+        </a>
+
+        <a href="settings.html" class="flex items-center hover:text-cyan-400">
+          <span class="material-icons mr-2">settings</span>
+          <span>Settings</span>
+        </a>
+        <div class="flex items-center space-x-3 mt-4">
+          <img src="https://ui-avatars.com/api/?name=Kanash&background=4f46e5&color=fff&rounded=true" alt="Avatar"
+            class="w-8 h-8 rounded-full" />
+          <a href="login.html" class="text-sm text-white font-medium">Kanash</a>
         </div>
-      </aside>
+      </div>
+    </aside>
 
-<!-- Pop Up Windows-->
- 
+    <!-- Pop Up Windows-->
 
 
- <main class="flex-1 p-8 space-y-6">
+
+    <main class="flex-1 p-8 space-y-6">
       <div>
         <h1 class="text-2xl font-semibold">Hello, Kanash</h1>
         <p class="text-gray-400 text-sm">View, buy, and sell your stocks here!</p>
@@ -109,66 +109,72 @@
             </tr>
           </thead>
           <tbody>
-            
+
           </tbody>
         </table>
       </div>
     </main>
   </div>
   <div id="buyModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-  <div class="bg-gray-900 p-6 rounded-xl w-80 relative">
-    <button onclick="closeModal('buyModal')" class="absolute top-4 right-4 text-white text-2xl font-bold">&times;</button>
-    <h2 class="text-white text-xl font-bold mb-4 text-center">Buy Stocks</h2>
-    <input type="text" placeholder="Symbol..." class="w-full mb-3 p-2 bg-transparent border-b border-gray-400 text-white placeholder-gray-500 focus:outline-none">
-    <input type="number" placeholder="Quantity..." class="w-full mb-4 p-2 bg-transparent border-b border-gray-400 text-white placeholder-gray-500 focus:outline-none">
-    <button class="w-full bg-green-500 text-white py-2 rounded">Buy</button>
-    <p class="text-sm text-gray-400 text-right mt-4">Buying Power: $1,000,000</p>
+    <div class="bg-gray-900 p-6 rounded-xl w-80 relative">
+      <button onclick="closeModal('buyModal')"
+        class="absolute top-4 right-4 text-white text-2xl font-bold">&times;</button>
+      <h2 class="text-white text-xl font-bold mb-4 text-center">Buy Stocks</h2>
+      <input type="text" placeholder="Symbol..." id="buySymbol"
+        class="w-full mb-3 p-2 bg-transparent border-b border-gray-400 text-white placeholder-gray-500 focus:outline-none">
+      <input type="number" placeholder="Quantity..." id="buyQuantity"
+        class="w-full mb-4 p-2 bg-transparent border-b border-gray-400 text-white placeholder-gray-500 focus:outline-none">
+      <button onclick="submitBuy()" class="w-full bg-green-500 text-white py-2 rounded">Buy</button>
+      <p class="text-sm text-gray-400 text-right mt-4">Buying Power: <span id="buyCash">$0.00</span></p>
+    </div>
   </div>
-</div>
-<div id="sellModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-  <div class="bg-gray-900 p-6 rounded-xl w-80 relative">
-    <button onclick="closeModal('sellModal')" class="absolute top-4 right-4 text-white text-2xl font-bold">&times;</button>
-    <h2 class="text-white text-xl font-bold mb-4 text-center">Sell Stocks</h2>
-    <input type="text" placeholder="Symbol..." class="w-full mb-3 p-2 bg-transparent border-b border-gray-400 text-white placeholder-gray-500 focus:outline-none">
-    <input type="number" placeholder="Quantity..." class="w-full mb-4 p-2 bg-transparent border-b border-gray-400 text-white placeholder-gray-500 focus:outline-none">
-    <button class="w-full bg-red-500 text-white py-2 rounded">Sell</button>
-    <p class="text-sm text-gray-400 text-right mt-4">Buying Power: $1,000,000</p>
+  <div id="sellModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-gray-900 p-6 rounded-xl w-80 relative">
+      <button onclick="closeModal('sellModal')"
+        class="absolute top-4 right-4 text-white text-2xl font-bold">&times;</button>
+      <h2 class="text-white text-xl font-bold mb-4 text-center">Sell Stocks</h2>
+      <input type="text" placeholder="Symbol..." id="sellSymbol"
+        class="w-full mb-3 p-2 bg-transparent border-b border-gray-400 text-white placeholder-gray-500 focus:outline-none">
+      <input type="number" placeholder="Quantity..." id="sellQuantity"
+        class="w-full mb-4 p-2 bg-transparent border-b border-gray-400 text-white placeholder-gray-500 focus:outline-none">
+      <button onclick="submitSell()" class="w-full bg-red-500 text-white py-2 rounded">Sell</button>
+      <p class="text-sm text-gray-400 text-right mt-4">Buying Power: <span id="sellCash">$0.00</span></p>
+    </div>
   </div>
-</div>
-<script>
-  function openModal(id) {
-    document.getElementById(id).classList.remove('hidden');
-  }
-
-  function closeModal(id) {
-    document.getElementById(id).classList.add('hidden');
-  }
-
-  document.getElementById("buyBtn").addEventListener("click", () => openModal('buyModal'));
-  document.getElementById("sellBtn").addEventListener("click", () => openModal('sellModal'));
-
-  // Optional: Close when clicking outside the modal content
-  window.addEventListener("click", function(e) {
-    if (e.target.classList.contains("modal")) {
-      closeModal('buyModal');
-      closeModal('sellModal');
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
     }
-  });
 
-  async function loadPortfolioTable() {
-    try {
-      const res = await fetch("http://localhost:8000/api/portfolio/displayStocks");
-      const data = await res.json();
-      const tableBody = document.querySelector("tbody");
-      tableBody.innerHTML = "";
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
 
-      let totalValue = 0;
+    document.getElementById("buyBtn").addEventListener("click", () => openModal('buyModal'));
+    document.getElementById("sellBtn").addEventListener("click", () => openModal('sellModal'));
 
-      data.forEach(stock => {
-        const numericValue = parseFloat(stock.market_value.replace(/[^0-9.-]+/g,""));
-        totalValue += numericValue;
+    // Optional: Close when clicking outside the modal content
+    window.addEventListener("click", function (e) {
+      if (e.target.classList.contains("modal")) {
+        closeModal('buyModal');
+        closeModal('sellModal');
+      }
+    });
 
-        const row = `
+    async function loadPortfolioTable() {
+      try {
+        const res = await fetch("http://localhost:8000/api/portfolio/displayStocks");
+        const data = await res.json();
+        const tableBody = document.querySelector("tbody");
+        tableBody.innerHTML = "";
+
+        let totalValue = 0;
+
+        data.forEach(stock => {
+          const numericValue = parseFloat(stock.market_value.replace(/[^0-9.-]+/g, ""));
+          totalValue += numericValue;
+
+          const row = `
           <tr class="border-t border-gray-700 text-center hover:bg-gray-700 transition-colors font-light">
             <td class="p-4">${stock.symbol}</td>
             <td class="p-4">${stock.name}</td>
@@ -182,47 +188,114 @@
             <td class="p-4">${stock.purchase_price}</td>
           </tr>
         `;
-        tableBody.innerHTML += row;
-      });
+          tableBody.innerHTML += row;
+        });
 
-      document.getElementById("totalStockValue").innerText = `$${totalValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-      const totalGainCashValue = data.reduce((acc, stock) => acc + parseFloat(stock.total_gain_amount.replace(/[^0-9.-]+/g,"")), 0);
-      const totalGainPercentValue = data.reduce((acc, stock) => acc + parseFloat(stock.total_gain_percent.replace(/[^0-9.-]+/g,"")), 0);
+        document.getElementById("totalStockValue").innerText = `$${totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        const totalGainCashValue = data.reduce((acc, stock) => acc + parseFloat(stock.total_gain_amount.replace(/[^0-9.-]+/g, "")), 0);
+        const totalGainPercentValue = data.reduce((acc, stock) => acc + parseFloat(stock.total_gain_percent.replace(/[^0-9.-]+/g, "")), 0);
 
-      const totalGainCashElem = document.getElementById("totalGainCash");
-      const totalGainPercentElem = document.getElementById("totalGainPercent");
+        const totalGainCashElem = document.getElementById("totalGainCash");
+        const totalGainPercentElem = document.getElementById("totalGainPercent");
 
-      totalGainCashElem.innerText = `$${totalGainCashValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-      totalGainPercentElem.innerText = `${totalGainPercentValue.toFixed(2)}%`;
+        totalGainCashElem.innerText = `$${totalGainCashValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        totalGainPercentElem.innerText = `${totalGainPercentValue.toFixed(2)}%`;
 
-      // Set color based on value
-      totalGainCashElem.className = "text-2xl font-semibold " + (totalGainCashValue < 0 ? "text-red-500" : "text-blue-400");
-      totalGainPercentElem.className = "text-2xl font-semibold " + (totalGainPercentValue < 0 ? "text-red-500" : "text-blue-400");
+        // Set color based on value
+        totalGainCashElem.className = "text-2xl font-semibold " + (totalGainCashValue < 0 ? "text-red-500" : "text-green-400");
+        totalGainPercentElem.className = "text-2xl font-semibold " + (totalGainPercentValue < 0 ? "text-red-500" : "text-green-400");
 
-    } catch (err) {
-      console.error("Failed to load portfolio data:", err);
+      } catch (err) {
+        console.error("Failed to load portfolio data:", err);
+      }
     }
-  }
 
-  async function loadCashBalance() {
-    try {
-      const res = await fetch("http://localhost:8000/api/portfolio/cash");
-      const data = await res.json();
-      const cash = data.cash_balance;
+    async function loadCashBalance() {
+      try {
+        const res = await fetch("http://localhost:8000/api/portfolio/cash");
+        const data = await res.json();
+        const cash = parseFloat(data.cash_balance);
 
-      document.getElementById("buyingPower").innerText = `$${parseFloat(cash).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    } catch (err) {
-      console.error("Failed to load cash balance:", err);
+        const formatted = `$${cash.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+        document.getElementById("buyingPower").innerText = formatted;
+        document.getElementById("buyCash").innerText = formatted;
+        document.getElementById("sellCash").innerText = formatted;
+      } catch (err) {
+        console.error("Failed to load cash balance:", err);
+      }
     }
-  }
+    async function submitBuy() {
+      const symbol = document.getElementById("buySymbol").value.trim().toUpperCase();
+      const quantity = parseInt(document.getElementById("buyQuantity").value.trim());
+
+      if (!symbol || isNaN(quantity) || quantity <= 0) {
+        alert("Please enter a valid symbol and quantity.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:8000/api/portfolio/buy/${symbol}/${quantity}`, {
+          method: "POST"
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          alert(`❌ Error: ${err.detail}`);
+          return;
+        }
+
+        alert(`✅ Successfully bought ${quantity} shares of ${symbol}`);
+        loadPortfolioTable();   // refresh portfolio
+        loadCashBalance();      // refresh cash balance
+        document.getElementById("buySymbol").value = "";
+        document.getElementById("buyQuantity").value = "";
+      } catch (error) {
+        console.error("Buy failed:", error);
+        alert("An error occurred while buying the stock.");
+      }
+    }
+
+    async function submitSell() {
+      const symbol = document.getElementById("sellSymbol").value.trim().toUpperCase();
+      const quantity = parseInt(document.getElementById("sellQuantity").value.trim());
+
+      if (!symbol || isNaN(quantity) || quantity <= 0) {
+        alert("Please enter a valid symbol and quantity.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:8000/api/portfolio/sell/${symbol}/${quantity}`, {
+          method: "POST"
+        });
+
+        const result = await res.json();
+
+        if (!res.ok) {
+          alert(`❌ Error: ${result.detail}`);
+          return;
+        }
+
+        alert(`✅ ${result.message}`);
+        loadPortfolioTable();   // refresh portfolio
+        loadCashBalance();      // refresh cash balance
+        document.getElementById("sellSymbol").value = "";
+        document.getElementById("sellQuantity").value = "";
+      } catch (err) {
+        console.error("Sell error:", err);
+        alert("An error occurred while selling the stock.");
+      }
+    }
 
 
-  window.onload = () => {
-    loadPortfolioTable();
-    loadCashBalance();
-  };
+    window.onload = () => {
+      loadPortfolioTable();
+      loadCashBalance();
+    };
 
 
-</script>
+  </script>
 </body>
+
 </html>
