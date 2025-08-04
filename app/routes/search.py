@@ -7,9 +7,9 @@ router = APIRouter()
 def human_readable_number(num):
     for unit in ['', 'K', 'M', 'B', 'T']:
         if abs(num) < 1000:
-            return f"{num:.0f}{unit}"
+            return f"{num:.2f}{unit}"
         num /= 1000
-    return f"{num:.0f}T"
+    return f"{num:.2f}T"
 
 @router.get("/{symbol}")
 def search_stock(symbol: str):
