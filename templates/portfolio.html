@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <a href="index.html" class="block hover:text-cyan-400"></a>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
 
   </head>
@@ -14,18 +15,39 @@
     <div class="flex h-screen">
       <!-- Sidebar -->
       <aside class="w-64 bg-gray-800 p-6 flex flex-col">
-        <h2 class="text-2xl font-bold text-white mb-6">Portfolio Manager</h2>
-        <nav class="space-y-4 flex-1">
+        <h2 class="text-2xl font-semibold text-white mb-8 mt-2">Portfolio Manager</h2>
+        <nav class="space-y-8 flex-1">
           <a href="index.html" class="flex items-center text-white hover:text-cyan-400">
-            <span class="material-icons mr-2">Dashboard
-          </a>
-          <a href="portfolio.html" class="block text-cyan-400 font-semibold">Portfolio</a>
-          <a href="news.html" class="block hover:text-cyan-400">News</a>
-          <a href="analysis.html" class="block hover:text-cyan-400">Analysis</a>
+  <span class="material-icons mr-2">dashboard</span>
+  <span>Dashboard</span>
+</a>
+
+<a href="portfolio.html" class="flex items-center text-cyan-400 font-semibold">
+  <span class="material-icons mr-2">pie_chart</span>
+  <span>Portfolio</span>
+</a>
+
+<a href="news.html" class="flex items-center hover:text-cyan-400">
+  <span class="material-icons mr-2">trending_up</span>
+  <span>News</span>
+</a>
+
+<a href="analysis.html" class="flex items-center hover:text-cyan-400">
+  <span class="material-icons mr-2">analytics</span>
+  <span>Analysis</span>
+</a>
+
         </nav>
-        <div class="space-y-2">
-          <a href="#" class="block text-sm text-gray-400 hover:text-white">Support</a>
-          <a href="#" class="block text-sm text-gray-400 hover:text-white">Settings</a>
+        <div class="space-y-8">
+          <a href="support.html" class="flex items-center hover:text-cyan-400">
+  <span class="material-icons mr-2">help_outline</span>
+  <span>Support</span>
+</a>
+
+<a href="settings.html" class="flex items-center hover:text-cyan-400">
+  <span class="material-icons mr-2">settings</span>
+  <span>Settings</span>
+</a>
           <div class="flex items-center space-x-3 mt-4">
             <img src="https://ui-avatars.com/api/?name=Kanash&background=4f46e5&color=fff&rounded=true" alt="Avatar" class="w-8 h-8 rounded-full" />
             <a href="login.html" class="text-sm text-white font-medium">Kanash</span>
@@ -39,26 +61,26 @@
 
  <main class="flex-1 p-8 space-y-6">
       <div>
-        <h1 class="text-2xl font-bold">Hello, Kanash</h1>
+        <h1 class="text-2xl font-semibold">Hello, Kanash</h1>
         <p class="text-gray-400 text-sm">View, buy, and sell your stocks here!</p>
       </div>
 
       <div class="grid grid-cols-4 gap-4">
         <div class="bg-gray-800 p-4 rounded-lg col-span-1">
           <p class="text-sm text-gray-400">Total Stock Value</p>
-          <p class="text-2xl font-semibold text-white">$26,750.05</p>
+          <p class="text-2xl font-semibold text-white" id="totalStockValue">$0.00</p>
         </div>
         <div class="bg-gray-800 p-4 rounded-lg col-span-1">
           <p class="text-sm text-gray-400">Total Buying Power</p>
-          <p class="text-2xl font-semibold text-white">$10,220.00</p>
+          <p class="text-2xl font-semibold text-white" id="buyingPower">$0.00</p>
         </div>
         <div class="bg-gray-800 p-4 rounded-lg col-span-1">
-          <p class="text-sm text-gray-400">Today's gain</p>
-          <p class="text-2xl font-semibold text-green-400">+12.05%</p>
+          <p class="text-sm text-gray-400">Total gain $</p>
+          <p class="text-2xl font-semibold" id="totalGainCash">+0.00</p>
         </div>
         <div class="bg-gray-800 p-4 rounded-lg col-span-1">
-          <p class="text-sm text-gray-400">Total gain</p>
-          <p class="text-2xl font-semibold text-red-500">-42.05%</p>
+          <p class="text-sm text-gray-400">Total gain %</p>
+          <p class="text-2xl font-semibold" id="totalGainPercent">+0.00</p>
         </div>
         <div class="flex justify-center items-center space-x-4 mt-4">
           <button id="buyBtn" class="flex-1 bg-green-500 text-white py-2 rounded">Buy</button>
@@ -69,7 +91,7 @@
       <!-- Table -->
       <div class="bg-gray-800 p-4 rounded-lg overflow-x-auto">
         <table class="w-full text-sm">
-          <thead class="text-gray-400 text-left">
+          <thead class="text-center text-gray-400 text-[16px]">
             <tr>
               <th class="p-2">Symbol</th>
               <th class="p-2">Short Name</th>
@@ -84,20 +106,7 @@
             </tr>
           </thead>
           <tbody>
-            <!-- Sample Row (repeat or generate dynamically later) -->
-            <tr class="border-t border-gray-700">
-              <td class="p-2">AAPL</td>
-              <td class="p-2">Apple Inc.</td>
-              <td class="p-2">$210</td>
-              <td class="p-2">$4954</td>
-              <td class="p-2">120</td>
-              <td class="p-2">$3.5T</td>
-              <td class="p-2">4.55M</td>
-              <td class="p-2 text-red-500">-$56.95</td>
-              <td class="p-2 text-red-500">-20.44%</td>
-              <td class="p-2">$175.00</td>
-            </tr>
-            <!-- Add more rows here -->
+            
           </tbody>
         </table>
       </div>
@@ -142,6 +151,75 @@
       closeModal('sellModal');
     }
   });
+
+  async function loadPortfolioTable() {
+    try {
+      const res = await fetch("http://localhost:8000/api/portfolio/displayStocks");
+      const data = await res.json();
+      const tableBody = document.querySelector("tbody");
+      tableBody.innerHTML = "";
+
+      let totalValue = 0;
+
+      data.forEach(stock => {
+        const numericValue = parseFloat(stock.market_value.replace(/[^0-9.-]+/g,""));
+        totalValue += numericValue;
+
+        const row = `
+          <tr class="border-t border-gray-700 text-center hover:bg-gray-700 transition-colors font-light">
+            <td class="p-4">${stock.symbol}</td>
+            <td class="p-4">${stock.name}</td>
+            <td class="p-4">${stock.last_price}</td>
+            <td class="p-4">${stock.market_value}</td>
+            <td class="p-4">${stock.quantity}</td>
+            <td class="p-4">${stock.market_cap}</td>
+            <td class="p-4">${stock.volume}</td>
+            <td class="p-4 ${stock.total_gain_amount.startsWith('-') ? 'text-red-500' : 'text-green-400'}">$${stock.total_gain_amount}</td>
+            <td class="p-4 ${stock.total_gain_percent.startsWith('-') ? 'text-red-500' : 'text-green-400'}">${stock.total_gain_percent}</td>
+            <td class="p-4">${stock.purchase_price}</td>
+          </tr>
+        `;
+        tableBody.innerHTML += row;
+      });
+
+      document.getElementById("totalStockValue").innerText = `$${totalValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      const totalGainCashValue = data.reduce((acc, stock) => acc + parseFloat(stock.total_gain_amount.replace(/[^0-9.-]+/g,"")), 0);
+      const totalGainPercentValue = data.reduce((acc, stock) => acc + parseFloat(stock.total_gain_percent.replace(/[^0-9.-]+/g,"")), 0);
+
+      const totalGainCashElem = document.getElementById("totalGainCash");
+      const totalGainPercentElem = document.getElementById("totalGainPercent");
+
+      totalGainCashElem.innerText = `$${totalGainCashValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      totalGainPercentElem.innerText = `${totalGainPercentValue.toFixed(2)}%`;
+
+      // Set color based on value
+      totalGainCashElem.className = "text-2xl font-semibold " + (totalGainCashValue < 0 ? "text-red-500" : "text-blue-400");
+      totalGainPercentElem.className = "text-2xl font-semibold " + (totalGainPercentValue < 0 ? "text-red-500" : "text-blue-400");
+
+    } catch (err) {
+      console.error("Failed to load portfolio data:", err);
+    }
+  }
+
+  async function loadCashBalance() {
+    try {
+      const res = await fetch("http://localhost:8000/api/portfolio/cash");
+      const data = await res.json();
+      const cash = data.cash_balance;
+
+      document.getElementById("buyingPower").innerText = `$${parseFloat(cash).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    } catch (err) {
+      console.error("Failed to load cash balance:", err);
+    }
+  }
+
+
+  window.onload = () => {
+    loadPortfolioTable();
+    loadCashBalance();
+  };
+
+
 </script>
 </body>
 </html>

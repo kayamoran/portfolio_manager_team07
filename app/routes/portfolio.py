@@ -22,18 +22,18 @@ def display_stocks(db: Session = Depends(get_db)):
 
     for item in items:
         data = yf.Ticker(item.symbol).info
-        market_value = item.last_price * item.quantity
-        total_gain_amount = (item.last_price - item.avg_purchase_price) * item.quantity
-        total_gain_percent = ((item.last_price - item.avg_purchase_price) / item.avg_purchase_price) * 100 if item.avg_purchase_price else 0
+        market_value = data.get('regularMarketPrice') * item.quantity
+        total_gain_amount = (data.get('regularMarketPrice') - item.avg_purchase_price) * item.quantity
+        total_gain_percent = ((data.get('regularMarketPrice') - item.avg_purchase_price) / item.avg_purchase_price) * 100 if item.avg_purchase_price else 0
 
         portfolio.append({
             "symbol": item.symbol,
             "name": item.name,
-            "last_price": f"${item.last_price:.2f}",
+            "last_price": f"${data.get('regularMarketPrice', 0):.2f}",
             "quantity": item.quantity,
             "purchase_price": f"${item.avg_purchase_price:.2f}",
             "market_value": f"${market_value:.2f}",
-            "total_gain_amount": f"${total_gain_amount:.2f}",
+            "total_gain_amount": f"{total_gain_amount:.2f}",
             "total_gain_percent": f"{total_gain_percent:.2f}%",
             "market_cap": human_readable_number(data.get("marketCap", "N/A")),
             "volume": human_readable_number(data.get("volume", "N/A")),
