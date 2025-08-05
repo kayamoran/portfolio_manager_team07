@@ -25,7 +25,7 @@ def add_to_watchlist(symbol: str, db: Session = Depends(get_db)):
 def get_watchlist_list(db: Session = Depends(get_db)):
     return get_watchlist(db)
 
-@router.delete("/{symbol}")
+@router.delete("/delete/{symbol}")
 def delete_stock(symbol: str, db: Session = Depends(get_db)):
     if remove_from_watchlist(db, symbol.upper()):
         return {"message": "Deleted"}

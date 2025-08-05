@@ -68,29 +68,19 @@
                     <h1 class="text-2xl font-semibold">Hello, Kanash</h1>
                     <p class="text-gray-400 text-sm">View, buy, and sell your stocks here!</p>
                 </div>
-                <input type="text" placeholder="Search stocks..." class="bg-gray-700 text-white px-4 py-2 rounded" />
+                <input id="stockSearchInput" type="text" placeholder="Search stocks..."
+                    class="bg-gray-700 text-white px-4 py-2 rounded" />
+
             </div>
 
             <!-- Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 <!-- Watchlist -->
-                <div class="bg-gray-800 p-4 rounded shadow">
-                    <h2 class="text-lg font-semibold mb-4">Watchlist</h2>
-                    <ul class="space-y-2 text-sm">
-                        <li class="flex justify-between">
-                            <span>APPL</span><span>$212.12 <span class="text-green-400">+1.05%</span></span>
-                        </li>
-                        <li class="flex justify-between">
-                            <span>MS</span><span>$145.11 <span class="text-red-400">-4.12%</span></span>
-                        </li>
-                        <li class="flex justify-between">
-                            <span>ELF</span><span>$212.12 <span class="text-green-400">+2.08%</span></span>
-                        </li>
-                        <li class="flex justify-between">
-                            <span>MSFT</span><span>$212.12 <span class="text-green-400">+1.05%</span></span>
-                        </li>
-                    </ul>
+
+                <div id="watchlist" class="space-y-2 text-white bg-gray-800 p-4 rounded">
+                    <!-- Watchlist stocks will go here -->
                 </div>
+
 
                 <!-- Line Chart -->
                 <div class="bg-gray-800 p-4 rounded shadow col-span-2">
@@ -122,13 +112,13 @@
                 </div>
 
                 <!-- Pie Chart -->
-                <div class="bg-gray-800 p-4 rounded shadow">
-                    <h2 class="text-lg font-semibold mb-4">Holdings Breakdown</h2>
-                    <canvas id="pieChart"></canvas>
-                    <div class="flex justify-around text-sm text-gray-400 mt-4">
-                        <span class="text-green-400">Mutual Funds</span>
-                        <span class="text-blue-400">Stocks</span>
-                        <span class="text-red-400">Bonds</span>
+                <!-- Holdings Breakdown -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h2 class="text-white text-lg font-semibold mb-4">Holdings Breakdown</h2>
+
+                    <!-- Fixed height container -->
+                    <div class="relative h-64">
+                        <canvas id="pieChart"></canvas>
                     </div>
                 </div>
 
@@ -183,6 +173,163 @@
             }
         }
 
+        async function searchAndAddToWatchlist() {
+            const input = document.getElementById("stockSearchInput");
+            const symbol = input.value.trim().toUpperCase();
+
+            if (!symbol) {
+                alert("Please enter a stock symbol.");
+                return;
+            }
+
+            try {
+                // Step 1: Search for stock
+                const searchRes = await fetch(`http://localhost:8000/api/search/${symbol}`);
+                if (!searchRes.ok) {
+                    alert("❌ Stock not found.");
+                    return;
+                }
+
+                const stock = await searchRes.json();
+
+                // Step 2: Add to watchlist
+                const addRes = await fetch(`http://localhost:8000/api/watchlist/add/${symbol}`, {
+                    method: "POST"
+                });
+
+                if (!addRes.ok) {
+                    alert("❌ Could not add to watchlist.");
+                    return;
+                }
+
+                alert(`✅ ${stock.symbol} added to your watchlist.`);
+                input.value = "";
+
+                // Optionally refresh the watchlist UI here if you're rendering it dynamically
+                loadWatchlist();
+                loadHoldingBreakdown(); // Refresh pie chart
+
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Something went wrong. Try again :)");
+            }
+        }
+
+        async function loadWatchlist() {
+            try {
+                const res = await fetch("http://localhost:8000/api/watchlist/display");
+                const stocks = await res.json();
+
+                const container = document.getElementById("watchlist");
+                container.innerHTML = "";
+
+                if (stocks.length === 0) {
+                    container.innerHTML = "<p class='text-gray-400'>Your watchlist is empty.</p>";
+                    return;
+                }
+
+                stocks.forEach(stock => {
+                    const item = document.createElement("div");
+                    item.className = "flex justify-between items-center p-2 hover:bg-gray-600 hover:rounded transition-colors border-b border-gray-700";
+
+                    item.innerHTML = `
+        <div>
+          <p class="font-semibold">${stock.symbol}</p>
+          <p class="text-sm text-[#8E70C8]">${stock.name} — $${stock.price}</p>
+        </div>
+        <button onclick="removeFromWatchlist('${stock.symbol}')" title="Remove">
+          <span class="material-icons text-red-500 hover:text-red-400">delete</span>
+        </button>
+      `;
+
+                    container.appendChild(item);
+                });
+            } catch (err) {
+                console.error("Failed to load watchlist:", err);
+            }
+        }
+
+        let pieChartInstance = null;
+
+        async function loadHoldingBreakdown() {
+            try {
+                const res = await fetch("http://localhost:8000/api/portfolio/displayStocks");
+                const data = await res.json();
+
+                const labels = [];
+                const quantities = [];
+
+                data.forEach(stock => {
+                    labels.push(stock.symbol);
+                    quantities.push(stock.quantity);
+                });
+
+                const ctx = document.getElementById("pieChart").getContext("2d");
+
+                if (pieChartInstance) {
+                    pieChartInstance.destroy();
+                }
+
+                pieChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: quantities,
+                            backgroundColor: [
+                                '#3b82f6', '#22c55e', '#ef4444', '#eab308', '#8b5cf6', '#f97316',
+                                '#06b6d4', '#84cc16', '#facc15', '#a855f7', '#10b981', '#f43f5e',
+                                '#0ea5e9', '#f472b6', '#fb923c', '#14b8a6', '#e879f9', '#fde047'
+                            ],
+                            borderWidth: 5,
+                            borderColor: '#1f2937',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                                position: 'bottom',
+                                labels: {
+                                    color: 'white',
+                                    usePointStyle: true,
+                                    pointStyle: 'circle',
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("Error loading holding breakdown:", err);
+            }
+        }
+
+
+        async function removeFromWatchlist(symbol) {
+            if (!confirm(`Remove ${symbol} from watchlist?`)) return;
+
+            try {
+                const res = await fetch(`http://localhost:8000/api/watchlist/delete/${symbol}`, {
+                    method: "DELETE"
+                });
+
+                if (!res.ok) {
+                    alert("❌ Failed to remove from watchlist.");
+                    return;
+                }
+
+                alert(`✅ Removed ${symbol} from watchlist.`);
+                loadWatchlist();
+                loadHoldingBreakdown(); // Refresh pie chart
+            } catch (err) {
+                console.error("Error removing stock:", err);
+                alert("Something went wrong.");
+            }
+        }
+
+
         // Line Chart
         new Chart(document.getElementById('lineChart'), {
             type: 'line',
@@ -206,23 +353,14 @@
             }
         });
 
-        // Pie Chart
-        new Chart(document.getElementById('pieChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['Mutual Funds', 'Stocks', 'Bonds'],
-                datasets: [{
-                    data: [40, 40, 20],
-                    backgroundColor: ['#22c55e', '#3b82f6', '#ef4444'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                plugins: { legend: { display: false } }
-            }
-        });
+
         window.onload = () => {
             loadPortfolioTable();
+            document.getElementById("stockSearchInput").addEventListener("keypress", function (e) {
+                if (e.key === "Enter") searchAndAddToWatchlist();
+            });
+            loadWatchlist();
+            loadHoldingBreakdown(); // Load pie chart on initial load
         };
     </script>
 </body>
