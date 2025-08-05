@@ -84,7 +84,7 @@
 
                 <!-- Line Chart -->
                 <div class="bg-gray-800 p-4 rounded shadow col-span-2">
-                    <h2 class="text-lg font-semibold mb-4">Portfolio Value</h2>
+                    <h2 class="text-lg font-semibold mb-4">Wishlist Price History</h2>
                     <canvas id="lineChart"></canvas>
                     <div class="flex justify-between mt-4 text-sm text-gray-400">
                         <span>24H</span><span>1M</span><span>3M</span><span>6M</span><span>YTD</span><span>5Y</span><span>ALL</span>
@@ -92,9 +92,9 @@
                 </div>
 
                 <!-- Portfolio Overview -->
-                <div class="bg-gray-800 p-4 rounded shadow col-span-2">
+                <div class="scrollable overflow-y-auto max-h-[400px] bg-gray-800 p-4 rounded shadow col-span-2">
                     <h2 class="text-lg font-semibold mb-4">Portfolio Overview</h2>
-                    <table class="w-full text-sm">
+                    <table class=" w-full text-sm">
                         <thead class="text-center text-gray-400">
                             <tr>
                                 <th class="p-4">Symbol</th>
@@ -233,14 +233,15 @@
                     item.className = "flex justify-between items-center p-2 hover:bg-gray-600 hover:rounded transition-colors border-b border-gray-700";
 
                     item.innerHTML = `
-        <div>
-          <p class="font-semibold">${stock.symbol}</p>
-          <p class="text-sm text-[#8E70C8]">${stock.name} — $${stock.price}</p>
-        </div>
-        <button onclick="removeFromWatchlist('${stock.symbol}')" title="Remove">
-          <span class="material-icons text-red-500 hover:text-red-400">delete</span>
-        </button>
-      `;
+                        <div onclick="loadLineChart('${stock.symbol}')" class="cursor-pointer">
+                            <p class="font-semibold">${stock.symbol}</p>
+                            <p class="text-sm text-[#8E70C8]">${stock.name} — $${stock.price}</p>
+                        </div>
+                        <button onclick="removeFromWatchlist('${stock.symbol}')" title="Remove">
+                            <span class="material-icons text-red-500 hover:text-red-400">delete</span>
+                        </button>
+                        `;
+
 
                     container.appendChild(item);
                 });
@@ -331,27 +332,47 @@
 
 
         // Line Chart
-        new Chart(document.getElementById('lineChart'), {
-            type: 'line',
-            data: {
-                labels: [...Array(30).keys()],
-                datasets: [{
-                    label: 'Portfolio Value',
-                    data: [100, 90, 80, 50, 45, 60, 58, 59, 60, 70, 90, 92, 95, 110, 105, 100, 102, 120, 125, 130, 128, 135, 140, 138, 140, 145, 148, 149, 150, 155],
-                    borderColor: '#8b5cf6',
-                    backgroundColor: 'rgba(139, 92, 246, 0.2)',
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
-            options: {
-                plugins: { legend: { labels: { color: 'white' } } },
-                scales: {
-                    x: { ticks: { color: 'white' }, grid: { color: '#333' } },
-                    y: { ticks: { color: 'white' }, grid: { color: '#333' } }
+        let lineChartInstance = null;
+
+        async function loadLineChart(symbol = "AAPL") {
+            try {
+                const res = await fetch(`http://localhost:8000/api/search/history/${symbol}`);
+                const data = await res.json();
+
+                const ctx = document.getElementById("lineChart").getContext("2d");
+
+                if (lineChartInstance) {
+                    lineChartInstance.destroy();
                 }
+
+                lineChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.dates,
+                        datasets: [{
+                            label: `${data.symbol}`,
+                            data: data.prices,
+                            borderColor: '#8E70C8',
+                            backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: { labels: { color: 'white' } }
+                        },
+                        scales: {
+                            x: { ticks: { color: 'white' }, grid: { color: '#333' } },
+                            y: { ticks: { color: 'white' }, grid: { color: '#333' } }
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("Failed to load line chart data:", err);
+                alert("Unable to load historical data for this stock.");
             }
-        });
+        }
 
 
         window.onload = () => {
@@ -360,9 +381,34 @@
                 if (e.key === "Enter") searchAndAddToWatchlist();
             });
             loadWatchlist();
-            loadHoldingBreakdown(); // Load pie chart on initial load
+            loadHoldingBreakdown(); 
+            loadLineChart("AAPL"); 
         };
     </script>
+
+    <style>
+        /* Target scrollable containers */
+        .scrollable::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scrollable::-webkit-scrollbar-track {
+            background: #1f2937;
+            /* Tailwind gray-800 */
+            border-radius: 4px;
+        }
+
+        .scrollable::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            /* Tailwind gray-600 */
+            border-radius: 4px;
+        }
+
+        .scrollable::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+            /* Tailwind gray-500 */
+        }
+    </style>
 </body>
 
 </html>

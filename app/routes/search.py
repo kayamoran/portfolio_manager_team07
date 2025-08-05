@@ -29,3 +29,16 @@ def search_stock(symbol: str):
         "market_cap": human_readable_number(info.get("marketCap")),
         "trading_volume": human_readable_number(info.get("volume")),
     }
+    
+@router.get("/history/{symbol}")
+def get_stock_history(symbol: str):
+    import yfinance as yf
+    ticker = yf.Ticker(symbol)
+    hist = ticker.history(period="1mo", interval="1d")
+        
+    return {
+            "symbol": symbol,
+            "dates": hist.index.strftime("%Y-%m-%d").tolist(),
+            "prices": hist["Close"].fillna(method="ffill").tolist()
+        }
+
