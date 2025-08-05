@@ -105,44 +105,18 @@
                 <div class="bg-gray-800 p-4 rounded shadow col-span-2">
                     <h2 class="text-lg font-semibold mb-4">Portfolio Overview</h2>
                     <table class="w-full text-sm">
-                        <thead class="text-left text-gray-400">
+                        <thead class="text-center text-gray-400">
                             <tr>
-                                <th>Symbol</th>
-                                <th>Price</th>
-                                <th>%Change</th>
-                                <th>Qty</th>
-                                <th>Value</th>
+                                <th class="p-4">Symbol</th>
+                                <th class="p-4">Name</th>
+                                <th class="p-4">Price</th>
+                                <th class="p-4">%Change</th>
+                                <th class="p-4">Qty</th>
+                                <th class="p-4">Value</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-t border-gray-700">
-                                <td>APPL</td>
-                                <td>$212.12</td>
-                                <td class="text-green-400">+1.05%</td>
-                                <td>20</td>
-                                <td>$4500</td>
-                            </tr>
-                            <tr class="border-t border-gray-700">
-                                <td>MS</td>
-                                <td>$145.11</td>
-                                <td class="text-red-400">-4.12%</td>
-                                <td>51</td>
-                                <td>$237.5</td>
-                            </tr>
-                            <tr class="border-t border-gray-700">
-                                <td>ELF</td>
-                                <td>$212.12</td>
-                                <td class="text-green-400">+2.08%</td>
-                                <td>18</td>
-                                <td>$500.3</td>
-                            </tr>
-                            <tr class="border-t border-gray-700">
-                                <td>MSFT</td>
-                                <td>$212.12</td>
-                                <td class="text-green-400">+1.05%</td>
-                                <td>20</td>
-                                <td>$966.4</td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -176,6 +150,39 @@
     </div>
 
     <script>
+
+
+        async function loadPortfolioTable() {
+            try {
+                const res = await fetch("http://localhost:8000/api/portfolio/displayStocks");
+                const data = await res.json();
+                const tableBody = document.querySelector("tbody");
+                tableBody.innerHTML = "";
+
+                let totalValue = 0;
+
+                data.forEach(stock => {
+                    const numericValue = parseFloat(stock.market_value.replace(/[^0-9.-]+/g, ""));
+                    totalValue += numericValue;
+
+                    const row = `
+          <tr class="border-t border-gray-700 text-center hover:bg-gray-700 transition-colors font-light">
+            <td class="p-4">${stock.symbol}</td>
+            <td class="p-4">${stock.name}</td>
+            <td class="p-4">${stock.last_price}</td>
+            <td class="p-4 ${stock.total_gain_percent.startsWith('-') ? 'text-red-500' : 'text-green-400'}">${stock.total_gain_percent}</td>
+            <td class="p-4">${stock.quantity}</td>
+            <td class="p-4">${stock.market_value}</td>
+          </tr>
+        `;
+                    tableBody.innerHTML += row;
+                });
+            }
+            catch (err) {
+                console.error("Failed to load portfolio data:", err);
+            }
+        }
+
         // Line Chart
         new Chart(document.getElementById('lineChart'), {
             type: 'line',
@@ -214,6 +221,9 @@
                 plugins: { legend: { display: false } }
             }
         });
+        window.onload = () => {
+            loadPortfolioTable();
+        };
     </script>
 </body>
 
