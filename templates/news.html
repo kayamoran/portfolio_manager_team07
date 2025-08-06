@@ -61,25 +61,60 @@
         <!-- Main Content -->
         <main class="flex-1 p-6 overflow-y-auto">
             <!-- Top Bar -->
+             
             <div class="flex justify-between items-center mb-6">
                 <div>
                     <h1 class="text-2xl font-bold">Hello, Kanash</h1>
                     <p class="text-sm text-gray-400">Welcome to your daily news hub</p>
-                </div>
-                <input type="text" placeholder="Search stocks..." class="bg-gray-700 text-white px-4 py-2 rounded" />
-            </div>
-            <div class="bg-gray-800 p-4 rounded shadow">
-                <h2 class="text-lg font-semibold mb-4">Market News</h2>
-                <ul class="space-y-2 text-sm">
-                    <li><strong class="text-red-400">CNN</strong> - Dow Dips As Microsoft Slips Ahead Of Earnings
-                    </li>
-                    <li><strong class="text-blue-400">CNBC</strong> - Nasdaq Slides As Tesla Tumbles On Delivery
-                        Concerns</li>
-                    <li><strong class="text-indigo-400">FOX</strong> - S&P Edges Lower As Apple Retreats Before Key
-                        Report</li>
-                    <li><strong class="text-white">AP</strong> - Tech Stocks Fall As Nvidia Sheds Gains</li>
-                </ul>
-            </div>
-    </div>
+               <br>
+            <div id="newsFeed" class="space-y-4"></div>
+
+            <script>
+    const apiKey = 'efa521561fee4b61b2d8df55795360c5'; // Get from https://newsapi.org/
+const endpoint = `https://newsapi.org/v2/everything?q="MSFT"%20OR%20"TSLA"%20OR%20"NVDA"%20OR%20"AAPL"&language=en&sortBy=publishedAt&pageSize=10&apiKey=${apiKey}`;
+
+
+
+    async function fetchNews() {
+      try {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        displayNews(data.articles);
+      } catch (err) {
+        console.error('Failed to load news:', err);
+      }
+    }
+
+    function displayNews(articles) {
+   const newsFeed = document.getElementById('newsFeed');
+  newsFeed.innerHTML = '';
+
+  articles.forEach(article => {
+    const card = document.createElement('div');
+    card.className = 'bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300';
+
+    card.innerHTML = `
+      <h3 class="text-lg font-bold text-cyan-400 mb-2">${article.title}</h3>
+      <p class="text-sm text-gray-300 mb-2">${article.description || ''}</p>
+      <a href="${article.url}" target="_blank" class="text-sm text-blue-400 hover:underline">Read more →</a>
+    `;
+
+    newsFeed.appendChild(card);
+  });
+}
+
+    function filterNews() {
+      const searchInput = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.news-card');
+
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(searchInput) ? 'block' : 'none';
+      });
+    }
+
+    fetchNews();
+  </script>
+
     </main>
     </div>
