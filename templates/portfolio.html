@@ -35,8 +35,8 @@
         </a>
 
         <a href="analysis.html" class="flex items-center hover:text-cyan-400">
-          <span class="material-icons mr-2">analytics</span>
-          <span>Analysis</span>
+          <span class="material-icons mr-2">computer</span>
+          <span>AI Analysis</span>
         </a>
 
       </nav>
@@ -145,6 +145,10 @@
     </div>
   </div>
   <script>
+
+    const baseUrl = "https://portfolio-manager-team07.onrender.com/api";
+    const localUrl = "http://localhost:8000/api";
+
     function openModal(id) {
       document.getElementById(id).classList.remove('hidden');
     }
@@ -166,7 +170,7 @@
 
     async function loadPortfolioTable() {
       try {
-        const res = await fetch("http://localhost:8000/api/portfolio/displayStocks");
+        const res = await fetch(`${baseUrl}/portfolio/displayStocks`);
         const data = await res.json();
         const tableBody = document.querySelector("tbody");
         tableBody.innerHTML = "";
@@ -215,7 +219,7 @@
 
     async function loadCashBalance() {
       try {
-        const res = await fetch("http://localhost:8000/api/portfolio/cash");
+        const res = await fetch(`${baseUrl}/portfolio/cash`);
         const data = await res.json();
         const cash = parseFloat(data.cash_balance);
 
@@ -238,7 +242,7 @@
       }
 
       try {
-        const res = await fetch(`http://localhost:8000/api/portfolio/buy/${symbol}/${quantity}`, {
+        const res = await fetch(`${baseUrl}/portfolio/buy/${symbol}/${quantity}`, {
           method: "POST"
         });
 
@@ -269,7 +273,7 @@
       }
 
       try {
-        const res = await fetch(`http://localhost:8000/api/portfolio/sell/${symbol}/${quantity}`, {
+        const res = await fetch(`${baseUrl}/portfolio/sell/${symbol}/${quantity}`, {
           method: "POST"
         });
 

@@ -35,8 +35,8 @@
                 </a>
 
                 <a href="analysis.html" class="flex items-center hover:text-cyan-400">
-                    <span class="material-icons mr-2">analytics</span>
-                    <span>Analysis</span>
+                    <span class="material-icons mr-2">computer</span>
+                    <span>AI Analysis</span>
                 </a>
 
             </nav>
@@ -68,33 +68,23 @@
                     <h1 class="text-2xl font-semibold">Hello, Kanash</h1>
                     <p class="text-gray-400 text-sm">View, buy, and sell your stocks here!</p>
                 </div>
-                <input type="text" placeholder="Search stocks..." class="bg-gray-700 text-white px-4 py-2 rounded" />
+                <input id="stockSearchInput" type="text" placeholder="Search stocks..."
+                    class="bg-gray-700 text-white px-4 py-2 rounded" />
+
             </div>
 
             <!-- Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 <!-- Watchlist -->
-                <div class="bg-gray-800 p-4 rounded shadow">
-                    <h2 class="text-lg font-semibold mb-4">Watchlist</h2>
-                    <ul class="space-y-2 text-sm">
-                        <li class="flex justify-between">
-                            <span>APPL</span><span>$212.12 <span class="text-green-400">+1.05%</span></span>
-                        </li>
-                        <li class="flex justify-between">
-                            <span>MS</span><span>$145.11 <span class="text-red-400">-4.12%</span></span>
-                        </li>
-                        <li class="flex justify-between">
-                            <span>ELF</span><span>$212.12 <span class="text-green-400">+2.08%</span></span>
-                        </li>
-                        <li class="flex justify-between">
-                            <span>MSFT</span><span>$212.12 <span class="text-green-400">+1.05%</span></span>
-                        </li>
-                    </ul>
+
+                <div id="watchlist" class="space-y-2 text-white bg-gray-800 p-4 rounded">
+                    <!-- Watchlist stocks will go here -->
                 </div>
+
 
                 <!-- Line Chart -->
                 <div class="bg-gray-800 p-4 rounded shadow col-span-2">
-                    <h2 class="text-lg font-semibold mb-4">Portfolio Value</h2>
+                    <h2 class="text-lg font-semibold mb-4">Wishlist Price History</h2>
                     <canvas id="lineChart"></canvas>
                     <div class="flex justify-between mt-4 text-sm text-gray-400">
                         <span>24H</span><span>1M</span><span>3M</span><span>6M</span><span>YTD</span><span>5Y</span><span>ALL</span>
@@ -102,59 +92,33 @@
                 </div>
 
                 <!-- Portfolio Overview -->
-                <div class="bg-gray-800 p-4 rounded shadow col-span-2">
+                <div class="scrollable overflow-y-auto max-h-[400px] bg-gray-800 p-4 rounded shadow col-span-2">
                     <h2 class="text-lg font-semibold mb-4">Portfolio Overview</h2>
-                    <table class="w-full text-sm">
-                        <thead class="text-left text-gray-400">
+                    <table class=" w-full text-sm">
+                        <thead class="text-center text-gray-400">
                             <tr>
-                                <th>Symbol</th>
-                                <th>Price</th>
-                                <th>%Change</th>
-                                <th>Qty</th>
-                                <th>Value</th>
+                                <th class="p-4">Symbol</th>
+                                <th class="p-4">Name</th>
+                                <th class="p-4">Price</th>
+                                <th class="p-4">%Change</th>
+                                <th class="p-4">Qty</th>
+                                <th class="p-4">Value</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-t border-gray-700">
-                                <td>APPL</td>
-                                <td>$212.12</td>
-                                <td class="text-green-400">+1.05%</td>
-                                <td>20</td>
-                                <td>$4500</td>
-                            </tr>
-                            <tr class="border-t border-gray-700">
-                                <td>MS</td>
-                                <td>$145.11</td>
-                                <td class="text-red-400">-4.12%</td>
-                                <td>51</td>
-                                <td>$237.5</td>
-                            </tr>
-                            <tr class="border-t border-gray-700">
-                                <td>ELF</td>
-                                <td>$212.12</td>
-                                <td class="text-green-400">+2.08%</td>
-                                <td>18</td>
-                                <td>$500.3</td>
-                            </tr>
-                            <tr class="border-t border-gray-700">
-                                <td>MSFT</td>
-                                <td>$212.12</td>
-                                <td class="text-green-400">+1.05%</td>
-                                <td>20</td>
-                                <td>$966.4</td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Pie Chart -->
-                <div class="bg-gray-800 p-4 rounded shadow">
-                    <h2 class="text-lg font-semibold mb-4">Holdings Breakdown</h2>
-                    <canvas id="pieChart"></canvas>
-                    <div class="flex justify-around text-sm text-gray-400 mt-4">
-                        <span class="text-green-400">Mutual Funds</span>
-                        <span class="text-blue-400">Stocks</span>
-                        <span class="text-red-400">Bonds</span>
+                <!-- Holdings Breakdown -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h2 class="text-white text-lg font-semibold mb-4">Holdings Breakdown</h2>
+
+                    <!-- Fixed height container -->
+                    <div class="relative h-64">
+                        <canvas id="pieChart"></canvas>
                     </div>
                 </div>
 
@@ -176,45 +140,276 @@
     </div>
 
     <script>
-        // Line Chart
-        new Chart(document.getElementById('lineChart'), {
-            type: 'line',
-            data: {
-                labels: [...Array(30).keys()],
-                datasets: [{
-                    label: 'Portfolio Value',
-                    data: [100, 90, 80, 50, 45, 60, 58, 59, 60, 70, 90, 92, 95, 110, 105, 100, 102, 120, 125, 130, 128, 135, 140, 138, 140, 145, 148, 149, 150, 155],
-                    borderColor: '#8b5cf6',
-                    backgroundColor: 'rgba(139, 92, 246, 0.2)',
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
-            options: {
-                plugins: { legend: { labels: { color: 'white' } } },
-                scales: {
-                    x: { ticks: { color: 'white' }, grid: { color: '#333' } },
-                    y: { ticks: { color: 'white' }, grid: { color: '#333' } }
-                }
-            }
-        });
 
-        // Pie Chart
-        new Chart(document.getElementById('pieChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['Mutual Funds', 'Stocks', 'Bonds'],
-                datasets: [{
-                    data: [40, 40, 20],
-                    backgroundColor: ['#22c55e', '#3b82f6', '#ef4444'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                plugins: { legend: { display: false } }
+        const baseUrl = "https://portfolio-manager-team07.onrender.com/api";
+        const localUrl = "http://localhost:8000/api";
+        async function loadPortfolioTable() {
+            try {
+                const res = await fetch(`${baseUrl}/portfolio/displayStocks`);
+                const data = await res.json();
+                const tableBody = document.querySelector("tbody");
+                tableBody.innerHTML = "";
+
+                let totalValue = 0;
+
+                data.forEach(stock => {
+                    const numericValue = parseFloat(stock.market_value.replace(/[^0-9.-]+/g, ""));
+                    totalValue += numericValue;
+
+                    const row = `
+          <tr class="border-t border-gray-700 text-center hover:bg-gray-700 transition-colors font-light">
+            <td class="p-4">${stock.symbol}</td>
+            <td class="p-4">${stock.name}</td>
+            <td class="p-4">${stock.last_price}</td>
+            <td class="p-4 ${stock.total_gain_percent.startsWith('-') ? 'text-red-500' : 'text-green-400'}">${stock.total_gain_percent}</td>
+            <td class="p-4">${stock.quantity}</td>
+            <td class="p-4">${stock.market_value}</td>
+          </tr>
+        `;
+                    tableBody.innerHTML += row;
+                });
             }
-        });
+            catch (err) {
+                console.error("Failed to load portfolio data:", err);
+            }
+        }
+
+        async function searchAndAddToWatchlist() {
+            const input = document.getElementById("stockSearchInput");
+            const symbol = input.value.trim().toUpperCase();
+
+            if (!symbol) {
+                alert("Please enter a stock symbol.");
+                return;
+            }
+
+            try {
+                // Step 1: Search for stock
+                const searchRes = await fetch(`${baseUrl}/search/${symbol}`);
+                if (!searchRes.ok) {
+                    alert("❌ Stock not found.");
+                    return;
+                }
+
+                const stock = await searchRes.json();
+
+                // Step 2: Add to watchlist
+                const addRes = await fetch(`${baseUrl}/watchlist/add/${symbol}`, {
+                    method: "POST"
+                });
+
+                if (!addRes.ok) {
+                    alert("❌ Could not add to watchlist.");
+                    return;
+                }
+
+                alert(`✅ ${stock.symbol} added to your watchlist.`);
+                input.value = "";
+
+                // Optionally refresh the watchlist UI here if you're rendering it dynamically
+                loadWatchlist();
+                loadHoldingBreakdown(); // Refresh pie chart
+
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Something went wrong. Try again :)");
+            }
+        }
+
+        async function loadWatchlist() {
+            try {
+                const res = await fetch(`${baseUrl}/watchlist/display`);
+                const stocks = await res.json();
+
+                const container = document.getElementById("watchlist");
+                container.innerHTML = "";
+
+                if (stocks.length === 0) {
+                    container.innerHTML = "<p class='text-gray-400'>Your watchlist is empty.</p>";
+                    return;
+                }
+
+                stocks.forEach(stock => {
+                    const item = document.createElement("div");
+                    item.className = "flex justify-between items-center p-2 hover:bg-gray-600 hover:rounded transition-colors border-b border-gray-700";
+
+                    item.innerHTML = `
+                        <div onclick="loadLineChart('${stock.symbol}')" class="cursor-pointer">
+                            <p class="font-semibold">${stock.symbol}</p>
+                            <p class="text-sm text-[#8E70C8]">${stock.name} — $${stock.price}</p>
+                        </div>
+                        <button onclick="removeFromWatchlist('${stock.symbol}')" title="Remove">
+                            <span class="material-icons text-red-500 hover:text-red-400">delete</span>
+                        </button>
+                        `;
+
+
+                    container.appendChild(item);
+                });
+            } catch (err) {
+                console.error("Failed to load watchlist:", err);
+            }
+        }
+
+        let pieChartInstance = null;
+
+        async function loadHoldingBreakdown() {
+            try {
+                const res = await fetch(`${baseUrl}/portfolio/displayStocks`);
+                const data = await res.json();
+
+                const labels = [];
+                const quantities = [];
+
+                data.forEach(stock => {
+                    labels.push(stock.symbol);
+                    quantities.push(stock.quantity);
+                });
+
+                const ctx = document.getElementById("pieChart").getContext("2d");
+
+                if (pieChartInstance) {
+                    pieChartInstance.destroy();
+                }
+
+                pieChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: quantities,
+                            backgroundColor: [
+                                '#3b82f6', '#22c55e', '#ef4444', '#eab308', '#8b5cf6', '#f97316',
+                                '#06b6d4', '#84cc16', '#facc15', '#a855f7', '#10b981', '#f43f5e',
+                                '#0ea5e9', '#f472b6', '#fb923c', '#14b8a6', '#e879f9', '#fde047'
+                            ],
+                            borderWidth: 5,
+                            borderColor: '#1f2937',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                                position: 'bottom',
+                                labels: {
+                                    color: 'white',
+                                    usePointStyle: true,
+                                    pointStyle: 'circle',
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("Error loading holding breakdown:", err);
+            }
+        }
+
+
+        async function removeFromWatchlist(symbol) {
+            if (!confirm(`Remove ${symbol} from watchlist?`)) return;
+
+            try {
+                const res = await fetch(`${baseUrl}/watchlist/delete/${symbol}`, {
+                    method: "DELETE"
+                });
+
+                if (!res.ok) {
+                    alert("❌ Failed to remove from watchlist.");
+                    return;
+                }
+
+                alert(`✅ Removed ${symbol} from watchlist.`);
+                loadWatchlist();
+                loadHoldingBreakdown(); // Refresh pie chart
+            } catch (err) {
+                console.error("Error removing stock:", err);
+                alert("Something went wrong.");
+            }
+        }
+
+
+        // Line Chart
+        let lineChartInstance = null;
+
+        async function loadLineChart(symbol = "AAPL") {
+            try {
+                const res = await fetch(`${baseUrl}/search/history/${symbol}`);
+                const data = await res.json();
+
+                const ctx = document.getElementById("lineChart").getContext("2d");
+
+                if (lineChartInstance) {
+                    lineChartInstance.destroy();
+                }
+
+                lineChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.dates,
+                        datasets: [{
+                            label: `${data.symbol}`,
+                            data: data.prices,
+                            borderColor: '#8E70C8',
+                            backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: { labels: { color: 'white' } }
+                        },
+                        scales: {
+                            x: { ticks: { color: 'white' }, grid: { color: '#333' } },
+                            y: { ticks: { color: 'white' }, grid: { color: '#333' } }
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("Failed to load line chart data:", err);
+                alert("Unable to load historical data for this stock.");
+            }
+        }
+
+
+        window.onload = () => {
+            loadPortfolioTable();
+            document.getElementById("stockSearchInput").addEventListener("keypress", function (e) {
+                if (e.key === "Enter") searchAndAddToWatchlist();
+            });
+            loadWatchlist();
+            loadHoldingBreakdown(); 
+            loadLineChart("AAPL"); 
+        };
     </script>
+
+    <style>
+        /* Target scrollable containers */
+        .scrollable::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scrollable::-webkit-scrollbar-track {
+            background: #1f2937;
+            /* Tailwind gray-800 */
+            border-radius: 4px;
+        }
+
+        .scrollable::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            /* Tailwind gray-600 */
+            border-radius: 4px;
+        }
+
+        .scrollable::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+            /* Tailwind gray-500 */
+        }
+    </style>
 </body>
 
 </html>
