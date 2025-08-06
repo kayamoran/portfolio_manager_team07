@@ -105,9 +105,12 @@
     </div>
 
     <script>
+
+        const baseUrl = "https://portfolio-manager-team07.onrender.com/api";
+        const localUrl = "http://localhost:8000/api";
         async function loadStockHealthScores() {
             try {
-                const res = await fetch("http://localhost:8000/api/portfolio/displayStocks");
+                const res = await fetch(`${baseUrl}/portfolio/displayStocks`);
                 const stocks = await res.json();
 
                 const container = document.getElementById("healthCards");

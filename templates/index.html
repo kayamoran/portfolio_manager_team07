@@ -142,6 +142,7 @@
     <script>
 
         const baseUrl = "https://portfolio-manager-team07.onrender.com/api";
+        const localUrl = "http://localhost:8000/api";
         async function loadPortfolioTable() {
             try {
                 const res = await fetch(`${baseUrl}/portfolio/displayStocks`);
