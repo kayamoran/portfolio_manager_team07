@@ -35,8 +35,8 @@
                 </a>
 
                 <a href="analysis.html" class="flex items-center hover:text-cyan-400">
-                    <span class="material-icons mr-2">analytics</span>
-                    <span>Analysis</span>
+                    <span class="material-icons mr-2">computer</span>
+                    <span>AI Analysis</span>
                 </a>
 
             </nav>
@@ -141,10 +141,10 @@
 
     <script>
 
-
+        const baseUrl = "https://portfolio-manager-team07.onrender.com/api";
         async function loadPortfolioTable() {
             try {
-                const res = await fetch("http://localhost:8000/api/portfolio/displayStocks");
+                const res = await fetch(`${baseUrl}/portfolio/displayStocks`);
                 const data = await res.json();
                 const tableBody = document.querySelector("tbody");
                 tableBody.innerHTML = "";
@@ -184,7 +184,7 @@
 
             try {
                 // Step 1: Search for stock
-                const searchRes = await fetch(`http://localhost:8000/api/search/${symbol}`);
+                const searchRes = await fetch(`${baseUrl}/search/${symbol}`);
                 if (!searchRes.ok) {
                     alert("❌ Stock not found.");
                     return;
@@ -193,7 +193,7 @@
                 const stock = await searchRes.json();
 
                 // Step 2: Add to watchlist
-                const addRes = await fetch(`http://localhost:8000/api/watchlist/add/${symbol}`, {
+                const addRes = await fetch(`${baseUrl}/watchlist/add/${symbol}`, {
                     method: "POST"
                 });
 
@@ -217,7 +217,7 @@
 
         async function loadWatchlist() {
             try {
-                const res = await fetch("http://localhost:8000/api/watchlist/display");
+                const res = await fetch(`${baseUrl}/watchlist/display`);
                 const stocks = await res.json();
 
                 const container = document.getElementById("watchlist");
@@ -254,7 +254,7 @@
 
         async function loadHoldingBreakdown() {
             try {
-                const res = await fetch("http://localhost:8000/api/portfolio/displayStocks");
+                const res = await fetch(`${baseUrl}/portfolio/displayStocks`);
                 const data = await res.json();
 
                 const labels = [];
@@ -312,7 +312,7 @@
             if (!confirm(`Remove ${symbol} from watchlist?`)) return;
 
             try {
-                const res = await fetch(`http://localhost:8000/api/watchlist/delete/${symbol}`, {
+                const res = await fetch(`${baseUrl}/watchlist/delete/${symbol}`, {
                     method: "DELETE"
                 });
 
@@ -336,7 +336,7 @@
 
         async function loadLineChart(symbol = "AAPL") {
             try {
-                const res = await fetch(`http://localhost:8000/api/search/history/${symbol}`);
+                const res = await fetch(`${baseUrl}/search/history/${symbol}`);
                 const data = await res.json();
 
                 const ctx = document.getElementById("lineChart").getContext("2d");

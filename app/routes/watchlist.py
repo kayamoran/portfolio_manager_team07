@@ -12,7 +12,8 @@ def add_to_watchlist(symbol: str, db: Session = Depends(get_db)):
     data = yf.Ticker(symbol).info
     if not data.get("regularMarketPrice"):
         raise HTTPException(status_code=404, detail="Stock not found")
-
+    if symbol.upper() in [item.symbol for item in get_watchlist(db)]:
+        raise HTTPException(status_code=400, detail="Stock already in watchlist")
     item = WatchlistItem(
         symbol=symbol.upper(),
         name=data.get("shortName", "N/A"),
