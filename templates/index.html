@@ -75,22 +75,6 @@
 
             <!-- Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                <!-- Watchlist -->
-
-                <div id="watchlist" class="space-y-2 text-white bg-gray-800 p-4 rounded">
-                    <!-- Watchlist stocks will go here -->
-                </div>
-
-
-                <!-- Line Chart -->
-                <div class="bg-gray-800 p-4 rounded shadow col-span-2">
-                    <h2 class="text-lg font-semibold mb-4">Wishlist Price History</h2>
-                    <canvas id="lineChart"></canvas>
-                    <div class="flex justify-between mt-4 text-sm text-gray-400">
-                        <span>24H</span><span>1M</span><span>3M</span><span>6M</span><span>YTD</span><span>5Y</span><span>ALL</span>
-                    </div>
-                </div>
-
                 <!-- Portfolio Overview -->
                 <div class="scrollable overflow-y-auto max-h-[400px] bg-gray-800 p-4 rounded shadow col-span-2">
                     <h2 class="text-lg font-semibold mb-4">Portfolio Overview</h2>
@@ -110,7 +94,7 @@
                         </tbody>
                     </table>
                 </div>
-
+                
                 <!-- Pie Chart -->
                 <!-- Holdings Breakdown -->
                 <div class="bg-gray-800 rounded-lg p-4">
@@ -121,6 +105,26 @@
                         <canvas id="pieChart"></canvas>
                     </div>
                 </div>
+                
+                <!-- Watchlist -->
+
+                <div id="watchlist" class="space-y-2 text-white bg-gray-800 p-4 rounded">
+                    <!-- Watchlist stocks will go here -->
+                </div>
+
+
+                <!-- Line Chart -->
+                <div class="bg-gray-800 p-4 rounded shadow col-span-2">
+                    <h2 class="text-lg font-semibold mb-4">Wishlist Price History</h2>
+                    <canvas id="lineChart"></canvas>
+                    <div class="flex justify-between mt-4 text-sm text-gray-400">
+                        <span>24H</span><span>1M</span><span>3M</span><span>6M</span><span>YTD</span><span>5Y</span><span>ALL</span>
+                    </div>
+                </div>
+
+                
+
+                
 
                 <!-- News Panel -->
                 <div class="bg-gray-800 p-4 rounded shadow">
