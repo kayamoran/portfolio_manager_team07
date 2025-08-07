@@ -1,11 +1,14 @@
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path=".env")
+
 from fastapi import FastAPI
 from app.database import engine
 from app.models import Base
-from app.routes import portfolio, search, watchlist
+from app.routes import news, portfolio, search, watchlist
 from app.models import WatchlistItem, PortfolioItem
 
 from fastapi.middleware.cors import CORSMiddleware
-
 
 
 
@@ -23,6 +26,7 @@ Base.metadata.create_all(bind=engine)
 app.include_router(watchlist.router, prefix="/api/watchlist", tags=["Watchlist"])
 app.include_router(search.router, prefix="/api/search", tags=["Search"])
 app.include_router(portfolio.router, prefix="/api/portfolio", tags=["Portfolio"])
+app.include_router(news.router, prefix="/api/news", tags=["News"])
 
 app.add_middleware(
     CORSMiddleware,

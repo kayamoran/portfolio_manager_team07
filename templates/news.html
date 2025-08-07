@@ -61,60 +61,66 @@
         <!-- Main Content -->
         <main class="flex-1 p-6 overflow-y-auto">
             <!-- Top Bar -->
-             
+
             <div class="flex justify-between items-center mb-6">
                 <div>
                     <h1 class="text-2xl font-bold">Hello, Kanash</h1>
                     <p class="text-sm text-gray-400">Welcome to your daily news hub</p>
-               <br>
-            <div id="newsFeed" class="space-y-4"></div>
+                    <br>
+                    <input type="text" id="searchInput" placeholder="Search news by stock symbol (e.g. TSLA)"
+                        class="mb-4 px-4 py-2 rounded bg-gray-700 text-white w-full max-w-md" />
 
-            <script>
-    const apiKey = 'efa521561fee4b61b2d8df55795360c5'; // Get from https://newsapi.org/
-    const endpoint = `https://newsapi.org/v2/everything?q="MSFT"%20OR%20"TSLA"%20OR%20"NVDA"%20OR%20"AAPL"&language=en&sortBy=publishedAt&pageSize=10&apiKey=${apiKey}`;
+                    <div id="newsFeed" class="space-y-4"></div>
+                    <script>
+                        let currentSymbol = "AAPL";
 
+                        async function fetchNews(symbol = currentSymbol) {
+                            try {
+                                const response = await fetch(`http://localhost:8000/api/news/get/${symbol}`);
+                                const data = await response.json();
+                                displayNews(data.articles || []);
+                            } catch (err) {
+                                console.error("Failed to load news:", err);
+                            }
+                        }
 
+                        function displayNews(articles) {
+                            const newsFeed = document.getElementById("newsFeed");
+                            newsFeed.innerHTML = "";
 
-    async function fetchNews() {
-      try {
-        const response = await fetch(endpoint);
-        const data = await response.json();
-        displayNews(data.articles);
-      } catch (err) {
-        console.error('Failed to load news:', err);
-      }
-    }
+                            if (!articles.length) {
+                                newsFeed.innerHTML = `<p class="text-gray-400">No news articles found.</p>`;
+                                return;
+                            }
 
-    function displayNews(articles) {
-   const newsFeed = document.getElementById('newsFeed');
-  newsFeed.innerHTML = '';
+                            articles.forEach(article => {
+                                const card = document.createElement("div");
+                                card.className =
+                                    "news-card bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300";
 
-  articles.forEach(article => {
-    const card = document.createElement('div');
-    card.className = 'bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300';
+                                card.innerHTML = `
+        <h3 class="text-lg font-bold text-cyan-400 mb-2">${article.title || "No title available"}</h3>
+        <p class="text-sm text-gray-300 mb-2">${article.description || "No description provided."}</p>
+        <a href="${article.url}" target="_blank" class="text-sm text-blue-400 hover:underline">Read more →</a>
+      `;
 
-    card.innerHTML = `
-      <h3 class="text-lg font-bold text-cyan-400 mb-2">${article.title}</h3>
-      <p class="text-sm text-gray-300 mb-2">${article.description || ''}</p>
-      <a href="${article.url}" target="_blank" class="text-sm text-blue-400 hover:underline">Read more →</a>
-    `;
+                                newsFeed.appendChild(card);
+                            });
+                        }
 
-    newsFeed.appendChild(card);
-  });
-}
+                        // Trigger fetch on Enter
+                        document.getElementById("searchInput").addEventListener("keypress", function (e) {
+                            if (e.key === "Enter") {
+                                const symbol = e.target.value.trim().toUpperCase();
+                                if (symbol) {
+                                    currentSymbol = symbol;
+                                    fetchNews(currentSymbol);
+                                }
+                            }
+                        });
 
-    function filterNews() {
-      const searchInput = document.getElementById('searchInput').value.toLowerCase();
-      const cards = document.querySelectorAll('.news-card');
-
-      cards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        card.style.display = text.includes(searchInput) ? 'block' : 'none';
-      });
-    }
-
-    fetchNews();
-  </script>
-
-    </main>
+                        // Initial fetch for default symbol
+                        fetchNews();
+                    </script>
+        </main>
     </div>

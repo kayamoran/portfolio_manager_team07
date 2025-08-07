@@ -110,7 +110,7 @@
         const localUrl = "http://localhost:8000/api";
         async function loadStockHealthScores() {
             try {
-                const res = await fetch(`${baseUrl}/portfolio/displayStocks`);
+                const res = await fetch(`${localUrl}/portfolio/displayStocks`);
                 const stocks = await res.json();
 
                 const container = document.getElementById("healthCards");
